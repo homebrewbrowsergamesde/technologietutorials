@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Copyright (C) 2011-2012  Stephan Kreutzer
+
+This file is part of Tutorial "Image-Maps mit einfacher PHP-Unterstützung".
+
+Tutorial "Image-Maps mit einfacher PHP-Unterstützung" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Image-Maps mit einfacher PHP-Unterstützung" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Image-Maps mit einfacher PHP-Unterstützung". If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+
+  <head>
+
+
+      <title>/skreutzer.de/browsergames/technologien/: Tutorial &bdquo;Image-Maps mit einfacher PHP-Unterstützung&ldquo;</title>
+
+      <meta name="description" content="skreutzer.de: Technologie-Tutorial zu Image-Maps mit einfacher PHP-Unterstützung." />
+      <meta name="copyright" content="Stephan Kreutzer" />
+      <meta name="author" content="Stephan Kreutzer" />
+      <meta name="keywords" content="Browsergame,Programmierung,HTML,Image Maps,PHP" />
+      <meta http-equiv="expires" content="1296000" />
+      <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+
+  </head>
+
+
+  <body>
+
+
+      <div>
+        <h1>skreutzer.de</h1>
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Image-Maps mit einfacher PHP-Unterstützung&ldquo;
+        <hr />
+      </div>
+
+
+      <div>
+        <h2>Tutorial &bdquo;Image-Maps mit einfacher PHP-Unterstützung&ldquo;</h2>
+        <div>
+          <h3>Copyright</h3>
+          <pre>
+Tutorial "Image-Maps mit einfacher PHP-Unterstützung" (C) 2011-2012  Stephan Kreutzer
+
+Tutorial "Image-Maps mit einfacher PHP-Unterstützung" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Image-Maps mit einfacher PHP-Unterstützung" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Image-Maps mit einfacher PHP-Unterstützung". If not, see &lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.
+
+The complete source code is available at &lt;<a href="http://www.skreutzer.de/browsergames/technologien/image_maps_mit_einfacher_php_unterstuetzung.html">http://www.skreutzer.de/browsergames/technologien/image_maps_mit_einfacher_php_unterstuetzung.html</a>&gt;.
+          </pre>
+        </div>
+        <p>
+          Download des vollständigen Quellcodes (Version <a href="tutorial_image_maps_mit_einfacher_php_unterstuetzung_20121113T2201.tar.gz">20121113T2201</a>). Kurzes <a href="http://www.youtube.com/watch?v=Zo1kOoZ67IY&amp;list=PL200E9DE560E3B5BC">Beschreibungsvideo</a> auf youtube.com.
+        </p>
+        <div>
+          <h3>Einführung</h3>
+          <p>
+            Weil <a href="http://www.skreutzer.de/browsergames/technologien/reine_image_maps.html">reine Image-Maps</a> keinerlei wirkliche Spiel-Funktionalität bieten, besteht die konsequente Fortsetzung logischerweise darin, die Image-Maps zunächst ziemlich direkt mit Logik zu versehen. Hierfür gibt es verschiedene Möglichkeiten; üblicherweise wird JavaScript oder PHP verwendet, die beteiligten Script-/Programmier-Sprachen sind aber von der konkreten Aufgabenstellung abhängig. Mit JavaScript wäre beispielsweise die Verzweigung zu unterschiedlichen Bildern je nach Tageszeit (Tag-/Nachtwechsel) sogar schon clientseitig realisierbar, weil aber insbesondere der Spielfortschritt oder ein Inventar in einer Datenbank serverseitig abgelegt werden will, behandelt dieses Tutorial hauptsächlich eine einfache PHP-Umsetzung. Auf diese Weise ist die virtuelle Welt der Image-Maps nicht mehr länger nur begehbar, sondern es wird echte Interaktivität erzielt.
+          </p>
+          <p>
+            Technisch gesehen soll die Verlinkung eines Image-Map-Bereiches nicht mehr unmittelbar auf die nächste HTML-Seite führen, sondern auf entsprechenden PHP-Code. Dieser wird aufgrund des Klicks eben nicht nur wiederum seine HTML-Image-Map zur Anzeige ausgeben &ndash; es wird ferner eine entsprechende Datenbank-Operation ausgeführt, um Werte und Wertveränderungen permanent zu speichern und ggf. die HTML-Ausgabe zu variieren.
+          </p>
+        </div>
+        <div>
+          <h3>Voraussetzungen</h3>
+          <p>
+            Die Beteiligung von PHP und einer Datenbank bringt es mit sich, dass das Browsergame nur noch auf einem Server betrieben werden kann. Die Programmierung und Entwicklung sollte dabei immer auf einer lokal installierten Server-Software auf dem eigenen Rechner durchgeführt werden. Ein fertiges, getestetes Ergebnis wird dann später auf einen Webserver hochgeladen, um über das Internet potentiellen Spielern zugänglich gemacht zu werden. Kenntnisse hinsichtlich Installation und Betrieb von Server-Software lokal und online sind nicht Gegenstand dieses Tutorials und werden vorausgesetzt. Es sollte berücksichtigt werden, dass zwar das lokale Experimentieren mit Browsergame-Code für jedermann vergleichsweise gefahrlos möglich ist, gleichzeitig aber im Web-Umfeld durch fehlerhaften Code oder falsche Konfiguration erhebliche Sicherheitslücken entstehen können, die im schlimmsten Fall sogar den gesamten Server lahm legen oder etwa zu strafrechtlichen Konsequenzen führen könnten. Deshalb besteht eine weitere wichtige Voraussetzung darin, sämtliche Versuche zu unterlassen, bei welchen man nicht genau weiß, was man eigentlich tut &ndash; entsprechendes Wissen ist vorher anzueignen, bevor dieses Tutorial Anwendung finden kann. Darüber hinaus ist der Code des Tutorials keineswegs vor Sicherheitslücken gefeit, sodass er vor dem Einsatz in einer Produktiv-Umgebung überprüft werden muss. Festgestellte Fehler sollen bitte gemeldet werden.
+          </p>
+          <p>
+            Der Tutorial-Code geht davon aus, dass der Inhalt der Datei <b>$/src/database.sql</b> (oder ein Äquivalent) auf dem Datenbank-System des Servers ausgeführt worden ist. Datenbank-Name, Datenbank-Benutzer, Host und Passwort müssen dabei angepasst und in <b>$/ftp/database.inc.php</b> vermerkt werden.
+          </p>
+        </div>
+        <div>
+          <h3>Spielkonzept</h3>
+          <p>
+            Ganz zu Anfang steht immer die Konzeptions-Phase, so auch im Tutorial. Die beschriebene Technologie eröffnet ein breites Spektrum an Umsetzungsmöglichkeiten diverser Spiele-Genres, weshalb von vornherein festgelegt werden muss, worin das Spielziel besteht, wie es gesteuert wird und welche Philosophien bei der Gestaltung verfolgt werden sollen. Das Tutorial-Spiel ist im Mittelalter angesiedelt. Es muss ein Schatz gefunden werden, was in Form einer Art Adventure realisiert werden soll. Um das Ziel zu erreichen, müssen Gegenstände gesammelt werden. Während jeder Spieler seine Gegenstände selbst verwaltet, teilen sich alle Spieler die Spielwelt, es handelt sich also in eingeschränktem Umfang um ein Multiplayer-Spiel. Es ist nicht möglich, mit anderen Spielern in Kontakt zu treten, ihre jeweiligen Handlungen beeinflussen das Spielgeschehen nur mittelbar. Es gibt keine grafischen Steuerelemente, vielmehr wird jede Aktion durch einen Klick direkt auf die Ansichtsoberfläche ausgelöst.<br />
+            Das Detail-Konzept (könnte Aufgabe eines Spiel-Designers sein) sieht vor, dass von einem Baum pro Tag ein Apfel gesammelt werden kann. Hat er erste Spieler den Apfel genommen, müssen die anderen Spieler einen Tag warten (nicht 24h, sondern mit Wechsel um 0:00). Jeder Spieler kann beliebig viele Äpfel sammeln. Es gibt im Spiel einen NPC, der Hunger hat. Wenn man ihm 3 Äpfel gibt, bietet er zum Dank einen Schlüssel an. Mit diesem kann man die Burg aufschließen, hat damit den Schatz gefunden und das Spiel gewonnen (individuell, nicht insgesamt).
+          </p>
+        </div>
+        <div>
+          <h3>Grundlagen</h3>
+          <p>
+            Da die Interaktion im Spiel permanenter Natur sein soll, ist die Art der Datenbank-Nutzung von Interesse, wobei das Spielkonzept deren Aufbau und die Art ihrer Nutzung vorgibt. Um die Verbindungs-Informationen für den Datenbank-Zugriff nicht über sämtlichen PHP-Code zu verteilen, wird zur Vereinfachung jeweils die <b>$/src/database.inc.php</b> eingebunden, was in der Variable namens <code>$mysql_connection</code> das Connection-Handle zur MySQL-Datenbank bereitstellt.<br />
+            Laut Konzept werden Gegenstände getrennt nach Spielern verwaltet, also wird ein Login benötigt. In den Projektdateien wird diese Aufgabe von <b>$/ftp/index.php</b> übernommen, einem primitiven Beispiel-Login-Script. Der Login ermittelt zunächst, ob ein Benutzer mit dem eingegebenen Namen schon existiert. Wenn nicht, wird er erstmalig angelegt. Ebenso werden seine Spieldaten initialisiert. Bei Erfolg (der wiederholten Anmeldung oder der Erst-„Registrierung“) wird die Session gesetzt, was alle weiteren Spiel-Seiten abprüfen werden, ob selbige beim Besucher vorliegt und er spielen darf. <b>$/ftp/index.php</b> leitet nach <b]$/ftp/ansicht_1.php</b> weiter, der Start-Ansicht des Spiels. Da weder Passwort noch E-Mail-Adresse von der Registrierung/Anmeldung verlangt werden, genügt es, den Namen eines anderen Spielers zu erraten, um mit einem fremden Account spielen zu können. Der Login ist daher ungeeignet für reale Bedingungen, aber für das Tutorial soll dieses simple Verfahren vorerst ausreichen. Dementsprechend einfach ist die Datenbank-Tabelle <tt>users</tt> gehalten, die lediglich eine Benutzer-ID und den Spielernamen entgegennimmt.
+          </p>
+        </div>
+        <div>
+          <h3>Programmierung</h3>
+          <p>
+            Alle Code-Dateien zur Darstellung der Spieloberfläche sind ähnlich aufgebaut. <b>$/ftp/ansicht_1.php</b> prüft erst die Session, gefolgt von einer Datenbank-Abfrage, die über interne Logik und Ansicht entscheidet. Bei <b>$/ftp/ansicht_1.php</b> besteht die Logik einzig und allein darin, das Burgtor „aufzuschließen“, wenn der Spieler den Burgschlüssel besitzt (d.h. ihm eine vorher unbekannte Navigationsmöglichkeit zu eröffnen &ndash; da die Navigation im Zuständigkeitsbereich der Oberfläche liegt, ist kein eigener Logik-Bereich nötig). Um herauszufinden, ob der Spieler den Schlüssel hat, wird sein Inventar abgefragt:
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/ansicht_1.php</b>
+            <pre><code>
+              $inventar = mysql_query("SELECT `burgschluessel`\n".
+                                      "FROM `inventory`\n".
+                                      "WHERE `user_id`=".$_SESSION['user_id']."\n",
+                                      $mysql_connection);
+            </code></pre>
+          </div>
+          <p>
+            Bei der ersten Anmeldung wurde die Tabelle <tt>inventory</tt> wie folgt initialisiert:
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/index.php</b>
+            <pre><code>
+              mysql_query("INSERT INTO `inventory` (`user_id`,\n".
+                          "    `aepfel`,\n".
+                          "    `burgschluessel`)\n".
+                          "VALUES (".$id.",\n".
+                          "    0,\n".
+                          "    0)\n",
+                          $mysql_connection);
+            </code></pre>
+          </div>
+          <p>
+            <code>$id</code> ist hierbei identisch mit <code>$_SESSION['user_id']</code>. Damit wird gleich nach der ersten Anmeldung der Wert in <code>$inventar['burgschluessel']&nbsp;==&nbsp;0</code> sein, die Anweisung
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/ansicht_1.php</b>
+            <pre><code>
+              if ($inventar['burgschluessel'] == 2)
+              {
+                  echo "          &lt;area shape=\"poly\" coords=\"635,325,635,288,653,281,664,281,681,290,681,331,635,325\" href=\"ansicht_4.php\" alt=\"Burgtor\" title=\"Schlüssel benutzen\"&nbsp;/&gt;\n";
+              }
+            </code></pre>
+          </div>
+          <p>
+            übersprungen werden. Weil PHP-Dateien auf dem Server liegen und stets eine generierte Ausgabe zurückliefern, kann der Benutzer weder Position noch Verweis des „Burgtors“ aus dem empfangenen HTML-Quellcode auslesen. Er könnte höchstens <b>ansicht_4.php</b> erraten, jedoch ist dort eine entsprechende Sicherung eingebaut. Die Abprüfung auf <code>==&nbsp;2</code> hat die besondere Bewandtnis, dass das Inventar (<tt>inventory</tt>) das Attribut <tt>burgschluessel</tt> nicht als Menge, sondern als Zustand aufnehmen soll. <code>0</code> bedeutet „Schlüssel nicht bekommen“, <code>1</code> steht für „Schlüssel nicht genommen“ und <code>2</code> für „Schlüssel befindet sich in Besitz des Spielers“.
+          </p>
+          <p>
+            <b>$/ftp/ansicht_2.php</b> ist ganz ähnlich aufgebaut: es wird mittels
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/ansicht_2.php</b>
+            <pre><code>
+              $baum = mysql_query("SELECT `zuletzt`\n".
+                                  "FROM `timer`\n".
+                                  "WHERE `name` LIKE \"baum\"",
+                                  $mysql_connection);
+            </code></pre>
+          </div>
+          <p>
+            die Datenbank abgefragt, um daraus Logik und Ansicht zu entwickeln. Die Logik findet nur dann Anwendung, wenn laut <code>$_GET</code> eine „Navigation“/Interaktion vorgenommen wurde. Wenn das nicht der Fall ist, muss eine Standard-Ansicht angeboten werden. Über die Variable <code>$variante</code> wird gesteuert, welche Ansicht jeweils passt. Der Wert <code>1</code> für „kein Apfel“ wird gleich beim beim ersten Aufruf durch den ersten Spieler zu einem zufälligen Wert <code>rand(2,&nbsp;4)</code> korrigiert, da <code>$baum['zuletzt']&nbsp;===&nbsp;NULL</code> zutrifft. Der Hintergrund ist, dass der Baum, welchen sich alle Spieler teilen, in der Datenbank nicht im Inventar oder einer vergleichbaren Tabelle verwaltet werden kann, sondern nur einmal für alle Spieler angelegt wird. Gemäß <b>$/src/database.sql</b> ist hierfür die Sonder-Tabelle <tt>timer</tt> vorgesehen, welche nicht bei jeder Spieler-Erstanmeldung neu initialisiert werden darf, sondern einmalig und übergreifend eingerichtet werden muss:
+          </p>
+          <div>
+            Auszug aus <b>$/src/database.sql</b>
+            <pre><code>
+              CREATE TABLE IF NOT EXISTS `timer` (
+                `name` varchar(255) COLLATE utf8_bin NOT NULL,
+                `zuletzt` date DEFAULT NULL
+              ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+              INSERT INTO `timer` (`name`, `zuletzt`)
+              VALUES ("baum", NULL);
+            </code></pre>
+          </div>
+          <p>
+            <code>2</code>, <code>3</code> und <code>4</code> für <code>$variante</code> sorgen dafür, dass der Apfel zufällig an unterschiedlichen Positionen erscheint. Dementsprechend variieren auch die <code>&lt;area&nbsp;/&gt;</code>-Angaben der Image-Map. Im <code>href</code>-Attribut zeigt sich dann, wie die interne Logik bei einem Klick als Folge des HTTP-GET-Parameters <code>action=get_apple</code> ausgelöst wird.<br />
+            Die Logik beginnt mit einer Abprüfung auf Betrugsversuche. Es kann unmöglich das <code>$baum['zuletzt']</code>-Datum aus der Datenbank gleich dem aktuellen Datum zusammen mit <code>action=get_apple</code> zutreffen, denn wenn der Apfel im <code>else</code>-Zweig erfolgreich geholt wird, wird das Datum bei <code>$baum['zuletzt']&nbsp;=&nbsp;date("Y-m-d")</code> gesetzt und hat somit später <code>1</code> für <code>$variante</code> zur Folge, <code>action=get_apple</code> wird fortan nicht mehr eingefügt. Dass die Datums-Vergleiche so einfach funktionieren, liegt an der geschickten Ausnutzung des ISO-8601-Datumsformats und der PHP-String-Eigenschaften. Hier der Überblick über den Ablauf:
+          </p>
+          <img src="image_maps_mit_einfacher_php_unterstuetzung_1.png" width="687px" height="455px" alt="Ablaufdiagramm zum Holen des Apfels." title="Ablaufdiagramm zu action=get_apple." />
+          <p>
+            <b>$/ftp/ansicht_3.php</b> ist nach ähnlichem Prinzip aufgebaut. Es stehen je nach Situation die unterschiedlichen Interaktions-Optionen <code>give_apples</code> und <code>get_key</code> zur Verfügung. Eine Besonderheit besteht darin, dass der Schlüssel bei <code>give_apples</code> nicht automatisch genommen (d.h. nicht automatisch in das Inventar eingetragen) wird, sondern ein Zwischenzustand <code>1</code> für <tt>inventory.burgschluessel</tt> vermerkt wird. Dieser hat zwar zunächst keine unmittelbare Auswirkung, denn wenn der Schlüssel nicht genommen wird, muss man erneut 3 Äpfel geben. Bei <code>get_key</code> lassen sich so aber Betrugsversuche identifizieren, falls der Spieler nicht mindestens einmal 3 Äpfel gegeben hat.
+          </p>
+          <p>
+            Wie <code>$inventar['burgschluessel']&nbsp;==&nbsp;2</code> in <b>$/ftp/ansicht_1.php</b> das „Burgtor aufgeschlossen“ (also die Navigation zu <b>$/ftp/ansicht_4.php</b> ermöglicht) hat, muss <b>$/ftp/ansicht_4.php</b> mit derselben Prüfung sicherstellen, dass die Ansicht nicht unerlaubt zur Anzeige gelangt. Während die Namen der PHP-Dateien ruhig geraten und manuell angebrowsed werden dürfen (weil dort jeweils Sicherungen eingebaut sind), ist eine namens-analoge PNG-Benennung nicht sehr ratsam.
+          </p>
+        </div>
+        <div>
+          <h3>Fazit</h3>
+          <p>
+            Obwohl das Tutorial per Definition auf eine konkrete Anwendung beschränkt ist, wird doch anhand der Beispiele deutlich, welches Potential mithilfe dieser einfachen Technik realisiert werden kann. Natürlich steht es jedem Programmierer frei, Funktionalität in Bibliotheken zu kapseln oder ein Framework für die Generierung der einzelnen Seiten zu implementieren. Abhängig vom Design kann die Datenbank komplexe Benutzer-Interaktionen abbilden, welche sich in kreativ gestalteten Ansichten wiederspiegeln. Denkbar wären Kaufläden, Farmen, Auktionshäuser, Post, NPCs mit unterschiedlichem Verhalten, Berufe, das Sammeln von Items/Rohstoffen, usw. Evtl. können die Werte in der Datenbank bei jeder Anmeldung automatisch manipuliert werden, um z.B. pro Tag seit der letzten Anmeldung den Kontostand des Benutzers zu verringern.<br />
+            Solche Überlegungen sind andererseits aber auch mit Vorsicht zu genießen, denn jede „Ansichts-Variante“ und jede Interaktions-Möglichkeit muss mühevoll einzeln erstellt werden. Ab einem gewissen Punkt lohnt es sich vielleicht eher, auf eine generische Technologie zu setzen, anstatt große Spiel-Teile mit der hier vorgestellten Methode umzusetzen.
+          </p>
+        </div>
+      </div>
+
+
+      <div>
+        <hr />
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Image-Maps mit einfacher PHP-Unterstützung&ldquo;
+      </div>
+
+
+  </body>
+
+
+</html>

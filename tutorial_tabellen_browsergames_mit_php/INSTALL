@@ -1,0 +1,6 @@
+
+  - Modify $/ftp/database.inc.php and $/src/database.sql.
+  - Execute $/src/database.sql on your MySQL server.
+  - Copy contents of $/ftp/ into the root directory of your web
+    project including all hidden .htaccess files.
+

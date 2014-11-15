@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Copyright (C) 2011-2012  Stephan Kreutzer
+
+This file is part of Tutorial "Tabellen-Browsergames mit PHP".
+
+Tutorial "Tabellen-Browsergames mit PHP" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Tabellen-Browsergames mit PHP" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Tabellen-Browsergames mit PHP". If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+
+  <head>
+
+
+      <title>/skreutzer.de/browsergames/technologien/: Tutorial &bdquo;Tabellen-Browsergames mit PHP&ldquo;</title>
+
+      <meta name="description" content="skreutzer.de: Technologie-Tutorial zu Tabellen-Browsergames mit PHP." />
+      <meta name="copyright" content="Stephan Kreutzer" />
+      <meta name="author" content="Stephan Kreutzer" />
+      <meta name="keywords" content="Browsergame,Programmierung,PHP,Tabelle,Tabellen-Browsergame,Tabellen-Browsergames" />
+      <meta http-equiv="expires" content="1296000" />
+      <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+
+  </head>
+
+
+  <body>
+
+
+      <div>
+        <h1>skreutzer.de</h1>
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Tabellen-Browsergames mit PHP&ldquo;
+        <hr />
+      </div>
+
+
+      <div>
+        <h2>Tutorial &bdquo;Tabellen-Browsergames mit PHP&ldquo;</h2>
+        <div>
+          <h3>Copyright</h3>
+          <pre>
+Tutorial "Tabellen-Browsergames mit PHP" (C) 2011-2012  Stephan Kreutzer
+
+Tutorial "Tabellen-Browsergames mit PHP" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Tabellen-Browsergames mit PHP" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Tabellen-Browsergames mit PHP". If not, see &lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.
+
+The complete source code is available at &lt;<a href="http://www.skreutzer.de/browsergames/technologien/tabellen_browsergames_mit_php.html">http://www.skreutzer.de/browsergames/technologien/tabellen_browsergames_mit_php.html</a>&gt;.
+          </pre>
+        </div>
+        <p>
+          Download des vollständigen Quellcodes (Version <a href="tutorial_tabellen_browsergames_mit_php_20121110T1137.tar.gz">20121110T1137</a>). Kurzes <a href="http://www.youtube.com/watch?v=UkVQkvyriDY&amp;list=PL200E9DE560E3B5BC">Beschreibungsvideo</a> auf youtube.com.
+        </p>
+        <div>
+          <h3>Einführung</h3>
+          <p>
+            Die traditionellste Browsergame-Technologie ist sicherlich eine tabellenorientierte Umsetzung. Die Gründe dafür sind vielfältig: Tabellen sind integraler Bestandteil von HTML, während das Speichern, Lesen und Manipulieren von Werten mittels Datenbank ebenso einer tabellarischen Datenhaltung entspricht. Insofern können Spieldaten beinahe 1:1, jedoch über die Schnittstelle der Spielmechanik mit der Ansichts-Oberfläche ausgetauscht werden &ndash; ein naheliegendes Verfahren. Tabellen-Browsergames sind nicht unbedingt auf eine grafische Informations-Repräsentation angewiesen und können dennoch ob ihrer spielerischen Tiefe für viele Stunden fesseln. Im Umkehrschluss bedeutet das aber auch, dass jene Spielkomplexität erst programmiert werden muss. Daher sind die Anforderungen im Vergleich zu einfacheren Browsergame-Technologien deutlich höher.
+          </p>
+          <p>
+            Aus technischer Sicht handelt es sich um eine herkömmliche PHP-Anwendung. PHP generiert die einzelnen &bdquo;Menü&ldquo;-Seiten des Spiels, über welche der Benutzer Einstellungen vornehmen kann. Letztere werden von PHP in eine MySQL-Datenbank transferiert, woraus sich dann wiederum die nunmehr aktualisierten Ansichten speisen. Weil das Spiel ausschließlich auf Ereignisse reagiert, die vom Benutzer ausgelöst werden, sind zentrale Spiel-Abläufe in einer Funktions-Bibliothek zusammengefasst.
+          </p>
+        </div>
+        <div>
+          <h3>Wozu eine Konzeptionsphase?</h3>
+          <p>
+            Von größter Wichtigkeit ist vor dem Beginn der Programmierung die Konzeption des Spielumfangs und der Spielgestaltung, denn grundlegende Änderungen sind zu einem späteren Zeitpunkt bei solchen größeren Projekten nicht oder nur noch mit erheblichem Aufwand möglich. Jede Überlegung in der Anfangsphase erspart im späteren Verlauf potentiell gravierende Schwierigkeiten. Beim Spielkonzept geht es aber andererseits nicht darum, sich in den kleinsten Details zu verlieren, sondern stattdessen soll die grobe Struktur und die Richtung vorgegeben werden. Zwar können die Einzelheiten gar nicht weit genug ausgestaltet werden, jedoch sollte dies bis zu einem gewissen Grad abstrakt geschehen. Schnittstellen und Code-Module können definiert werden, dabei muss jedoch die planerische Freiheit abseits vom konkreten Code gewahrt bleiben. Ereignisse und Abläufe, Balancing, Ansichten, Ober- und Untergrenzen, Verwaltungsaufgaben und Optionen wollen sorgsam durchdacht werden. Unvereinbarkeiten sollen so frühzeitig erkannt und bereinigt werden können.
+          </p>
+          <p>
+            Da die Planung beim ersten Anlauf höchstwahrscheinlich sehr schwer fallen wird, weil man zwangsläufig noch nicht wissen kann, was man überhaupt braucht und wo Gefahren lauern, empfiehlt es sich, mit einem minimalen Spielumfang zu beginnen und erstmal Erfahrung zu sammeln. Beim nächsten Mal wird dann viel klarer sein, worauf es ankommt.
+          </p>
+        </div>
+        <div>
+          <h3>Spielkonzept</h3>
+          <p>
+            Die Oberfläche des Spiels besteht allein aus HTML-Standard-Bedienelementen, womit das Strategie-Genre naheliegt. Zeitlich soll das Spiel im Mittelalter angesiedelt sein. Wie üblich werden Ressourcen abgebaut und Gebäude errichtet. Jeder Spieler erhält die gleiche Anzahl von Feldern, welche (bedingt zufällig) mit Ressourcen belegt werden. Gebäude werden unterschieden zwischen Land- und Stadtgebäuden. Landgebäude dienen der Ressourcenschöpfung und belegen ein Feld, während sämtliche Stadtgebäude auf einem einzigen imaginären Feld ohne Ressource zusammengefasst sind. Das folgende Bild soll diese Vorstellung verdeutlichen, wobei die Position der Felder absolut bedeutungslos ist, da keine grafische Karte realisiert wird:
+          </p>
+          <img src="tabellen_browsergames_mit_php_1.png" width="312px" height="244px" alt="Grid mit 5x5 Feldern, in der Mitte das imaginäre Stadt-Feld, womit 24 Ressourcen-Felder verbleiben." title="Theoretische Felder des Spiels" />
+          <p>
+            Ein theoretisches Feld <tt>S</tt> stellt die Stadt dar. Bei einem Grid von 5x5 Feldern ergibt das 24 Ressourcen-Felder. Als Einheiten-Aufstellung ist vorgesehen:
+          </p>
+          <img src="tabellen_browsergames_mit_php_2.png" width="886px" height="318px" alt="Bauernhof, Holzfäller, Steinbruch und Handelshaus mit jeweiliger Ressourcen-Aufstellung" title="Gebäude und Einheiten mit jeweiliger Ressourcen-Aufstellung" />
+          <p>
+            Bauernhof, Holzfäller, Steinbruch, Kohlemine<sup>1</sup>, Eisenmine<sup>1</sup> und Goldmine<sup>1</sup> sind Landgebäude und brauchen zur Errichtung ein passendes Ressourcenfeld. Die anderen Einheiten belegen keinen Platz.
+          </p>
+          <p>
+            Nun zum Ablauf: Der Spieler beginnt nach erfolgreicher Erst-Anmeldung mit seiner bedingt zufälligen Ressourcenfeld-Verteilung und einem Startkapital von 10 Nahrung + 6 Holz. Das Handelshaus ist für das wirtschaftliche Überleben sehr wichtig, kann aber mangels Stein am Anfang nicht gebaut werden. Stattdessen erhält jeder Spieler mindestens 1 Landfeld, 1 Waldfeld und 1 Gebirgsfeld, um die Grundbaustoff-Ressourcen Holz und Stein für das Handelshaus garantiert abbauen zu können. Der Spieler kann freilich seine Start-Rohstoffe für beispielsweise 2 Bauernhöfe &bdquo;verschwenden&ldquo;, sodass er zwar einen Nahrungs-Überschuss erzeugt, ihm aber ohne Handelshaus und ohne Holz von da an weitere Gebäude verwehrt bleiben. Der einzigste Ausweg besteht dann in der Hilfe durch einen anderen Spieler oder durch feindliche Eroberung<sup>1</sup>. Die Tage, die die beauftragten Gebäude und der Abbau von Rohstoffen benötigen, werden immer als ganze Tage angesehen, es besteht also kein Unterschied zwischen 0:00:00 Uhr und 23:59:59 Uhr desselben Tages (um tageszeitliche Vor- und Nachteile für die Spieler zu vermeiden). 1 Tag ist die kleinste zeitliche Einheit; alle längeren Zeiten müssen aus einem vielfachen dieser Einheit bestehen. Tage werden immer &bdquo;inklusiv&ldquo; betrachtet, d.h. was 3 Tage dauert, ist erst am 4. Tag fertiggestellt. Sämtliche abgebaute Ressourcen werden pro Tag gutgeschrieben für die Anzahl derjenigen Gebäude, deren Betriebskosten geordnet nach folgender feststehender Überlebens-Priorisierung nacheinander gedeckt werden können: Nahrung, Holz, Stein, Kohle<sup>1</sup>/Eisen<sup>1</sup>/Gold<sup>1</sup> (letztere drei zu gleichen Teilen).<br />
+            Darüber hinaus gehören vom Spieler ausgelöste Aktionen und Ereignisse zum Kern des Spielablaufs: Das &bdquo;Bauen&ldquo; von Gebäuden (und Einheiten<sup>1</sup>), das &bdquo;Senden&ldquo; von Rohstoffen an einen anderen bekannten Spieler, das &bdquo;Handeln&ldquo; über einen globalen und anonymen Markt sowie das &bdquo;Angreifen&ldquo;<sup>1</sup> von Kontrahenten. Die Aktionen &bdquo;Senden&ldquo; und &bdquo;Handeln&ldquo; setzen ein Handelshaus voraus. Die Aktion &bdquo;Angreifen&ldquo;<sup>1</sup> setzt eine Garnison<sup>1</sup> voraus. Beim Senden werden die eingestellten Rohstoffe den eigenen Ressourcen abgezogen und dem angegebenen Spieler direkt gutgeschrieben. Auf diese Weise können sich befreundete Spieler gegenseitig unterstützen, solange sie die entsprechenden Account-Namen kennen. Da Angriffe<sup>1</sup> aber ebenfalls den Account-Namen des Gegners erfordern, können beim Senden Spieler-Namen in Erfahrung gebracht werden. Eine sicherere Alternative ist das Handeln, welches aber gänzlich von Angebot und Nachfrage bestimmt wird. Rohstoffe, die der Spieler im Austausch gegen ein gewünschtes Gut anbietet, werden mit Gebotabgabe dem eigenen Guthaben abgezogen und in das Handelshaus transferiert. Es besteht dann aber auch die Möglichkeit, den Handelsvorschlag zurückzuziehen, um die angebotenen Rohstoffe zurückzuerhalten. Wenn ein anderer Spieler bereit ist, die gesuchte Menge herzugeben, wird getauscht. &bdquo;Angreifen&ldquo;<sup>1</sup> kann ein Spieler nur, wenn er den Account-Namen eines Gegners kennt. Dabei treten seine Soldaten<sup>1</sup> (entweder alle oder nur ein Teil) gegen die Soldaten<sup>1</sup> und Befestigungen<sup>1</sup> des Gegners an. Der Sieg<sup>1</sup> über einen Gegner führt lediglich dazu, dass dieser das Spiel neu beginnen<sup>1</sup> oder ganz aufgeben<sup>1</sup> kann. Dem Verteidiger wird der Name des Angreifers mitgeteilt<sup>1</sup>. Es besteht keine Möglichkeit, über die Anzahl an Soldaten<sup>1</sup> und Befestigungen<sup>1</sup> eines Spielers Informationen zu sammeln. Dadurch sollen Angriffe<sup>1</sup> besonders für den Angreifer ein hohes Risiko darstellen. Eine Belohnung<sup>1</sup> (etwa ein &bdquo;Eroberungspunkt&ldquo;<sup>1</sup> pro besiegtem Spieler für den Highscore<sup>1</sup> oder Ressourcen-Beute<sup>1</sup>) sowie ein Angriffs-Schutz bei Neubeginn<sup>1</sup> sind im Konzept vorerst nicht erfasst.
+          </p>
+        </div>
+        <div>
+          <h3>Technisches Konzept</h3>
+          <p>
+            Nach der Konzeption des Browsergames aus Sicht der späteren Spieler sollen ein paar Gedanken zur programmiertechnischen Seite folgen, vor allem auch deshalb, weil die Komplexität des Beispiels bereits jetzt schon recht hoch ist. Das eigentliche GUI besteht aus den Dateien <b>$/ftp/index.php</b> (Login), <b>$/ftp/uebersicht.php</b> (Übersichtsbildschirm mit Navigation), <b>$/ftp/bauen.php</b>, <b>$/ftp/senden.php</b>, <b>$/ftp/handeln.php</b> und <b>$/ftp/angreifen.php</b><sup>1</sup>. Diese GUI-Seiten dürfen der Einfachheit halber direkt lesend auf die Datenbank zugreifen, wenn Daten zur Erzeugung der HTML-Tabellen für die Anzeige benötigt werden. Alle schreibenden Datenbankzugriffe, Berechnungen und komplexere Logiken sind in einer einzigen, zentralen Bibliothek <b>$/ftp/game.inc.php</b> zusammengefasst. Die Verbindungsdaten für die Datenbank werden sowohl für die GUI-Seiten als auch für die <b>$/ftp/game.inc.php</b> in einer separaten <b>$/ftp/database.inc.php</b> wegabstrahiert.<br />
+            Benutzer sollen in der Datenbank automatisch angelegt werden, sofern noch kein Spieler mit dem gewünschten Namen existiert. Da die Spielernamen im Spiel sichtbar sind (beim &bdquo;Senden&ldquo; und &bdquo;Angreifen&ldquo;<sup>1</sup>), muss ein Account zusätzlich durch ein Passwort geschützt werden. Mit jedem Login wird die automatische Aktualisierung der jeweils dazugehörigen Spielerdaten durchgeführt. Die Aktualisierung wird nur dann Veränderungen vornehmen, wenn Werte heute noch nicht neu berechnet wurden. Damit bleibt ein wiederholter Login am gleichen Tag ohne Effekt. Der Code soll also gänzlich auf Cronjobs verzichten und stattdessen Timer in der Datenbank vorsehen. Weil der Spieler über Ereignisse informiert werden muss, die ihn betreffen, aber von jemand anderem ausgelöst wurden, wird ein internes Nachrichtensystem benötigt, das vom Code erzeugte Nachrichten zur Anzeige bringt und verwaltet.
+          </p>
+        </div>
+        <div>
+          <h3>Voraussetzungen</h3>
+          <p>
+            Die Beteiligung von PHP und einer Datenbank bringt es mit sich, dass das Browsergame auf einem Server betrieben werden muss. Die Programmierung und Entwicklung sollte dabei immer auf einer lokal installierten Server-Software auf dem eigenen Rechner durchgeführt werden. Ein fertiges, getestetes Ergebnis wird dann später auf einen Webserver hochgeladen, um über das Internet potentiellen Spielern zugänglich gemacht zu werden. Kenntnisse hinsichtlich Installation und Betrieb von Server-Software lokal und online sind nicht Gegenstand dieses Tutorials und werden vorausgesetzt. Es sollte berücksichtigt werden, dass zwar das lokale Experimentieren mit Browsergame-Code für jedermann vergleichsweise gefahrlos möglich ist, gleichzeitig aber im Web-Umfeld durch fehlerhaften Code oder falsche Konfiguration erhebliche Sicherheitslücken entstehen können, die im schlimmsten Fall sogar den gesamten Server lahm legen oder etwa zu strafrechtlichen Konsequenzen führen könnten. Deshalb besteht eine weitere wichtige Voraussetzung darin, sämtliche Versuche zu unterlassen, bei welchen man nicht genau weiß, was man eigentlich tut &ndash; entsprechendes Wissen ist vorher anzueignen, bevor dieses Tutorial Anwendung finden kann. Darüber hinaus ist der Code des Tutorials keineswegs vor Sicherheitslücken gefeit, sodass er vor dem Einsatz in einer Produktiv-Umgebung überprüft werden muss. Festgestellte Fehler sollen bitte gemeldet werden.
+          </p>
+          <p>
+            Der Tutorial-Code geht davon aus, dass der Inhalt der Datei <b>$/src/database.sql</b> (oder ein Äquivalent) auf dem Datenbank-System des Servers ausgeführt worden ist. Datenbank-Name, Datenbank-Benutzer, Host und Passwort müssen dabei angepasst und in <b>$/ftp/database.inc.php</b> vermerkt werden.
+          </p>
+        </div>
+        <div>
+          <h3>Programmierung</h3>
+          <p>
+            Wenn in <b>$/ftp/index.php</b> festgestellt wird, dass der Benutzer noch nicht existiert, wird er von <code>insertNewUser()</code> aus <b>$/ftp/game.inc.php</b> in der Tabelle <tt>user</tt> neu angelegt. Ferner übernimmt die Funktion die Initialisierung der Spielerdaten in den Tabellen <tt>user_map</tt> (enthält die Anzahl der noch nicht bebauten Felder) und <tt>user_resource</tt> (Rohstoff-Verwaltung des Benutzers). Im Vergleich zu <a href="http://www.skreutzer.de/browsergames/technologien/image_maps_mit_einfacher_php_unterstuetzung.html">Image-Maps mit einfacher PHP-Unterstützung</a> fällt auf, dass insbesondere die schreibenden Datenbank-Anweisungen sich des MySQL-Transaction-Mechanismus bestehend aus dem Dreisatz <code>BEGIN</code>, <code>COMMIT</code> und <code>ROLLBACK</code> bedienen. Wo die einzelnen schreibenden Datenbankoperationen eines kleineren Projekts individuell auf Erfolg überprüft werden, können die komplexeren Anweisungen des Tabellen-Browsergames nur noch insgesamt erfolgreich verlaufen. Wenn nämlich eine Anweisung fehlschlägt, dürfen die vorhergehenden Operationen nicht angewendet und müssen zurückgenommen werden. Anderenfalls wäre sonst vielleicht der Benutzer angelegt, der Eintrag in <tt>user_map</tt> aber nicht vorhanden, während in <tt>user_resource</tt> wiederum alles in Ordnung wäre. Alle späteren Aktionen im Spiel wären negativ von einer &bdquo;halben&ldquo; Initialisierung beeinflusst, weshalb ein solcher Zustand von vornherein verhindert wird, um evtl. mit einer Fehlermeldung auszusteigen.
+          </p>
+          <p>
+            Nachdem der Benutzer neu registriert wurde oder seine Account-Daten erfolgreich aus der Datenbank geholt werden konnten (= Anmeldung), wird mit <code>updateUser()</code> der <b>$/ftp/game.inc.php</b> eine Aktualisierung der Spielerdaten vorgenommen. Verläuft diese erfolgreich, wird wie üblich die Session gesetzt und auf allen weiteren GUI-Seiten dementsprechend abgeprüft. Damit bleibt der Zugriff auf das Spiel unterbunden, wenn die Spielerdaten-Aktualisierung nicht durchgeführt werden konnte.
+          </p>
+          <p>
+            Die Funktion <code>insertNewUser()</code> der <b>$/ftp/game.inc.php</b> verteilt die 24 Ressourcen-Felder insofern &bdquo;zufällig&ldquo;, als dass die Anweisungen für Gras, Holz und Stein mit
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/game.inc.php</b>
+            <pre><code>
+              $verbleibende_felder = 24;
+
+              $felder_gras = rand(1, $verbleibende_felder - 2);
+              $verbleibende_felder -= $felder_gras;
+              $felder_holz = rand(1, $verbleibende_felder - 1);
+              $verbleibende_felder -= $felder_holz;
+              $felder_stein = rand(1, $verbleibende_felder);
+              $verbleibende_felder -= $felder_stein;
+            </code></pre>
+          </div>
+          <p>
+            für die PHP-Funktion <code>rand()</code> ein Minimum von <code>1</code> vorgibt und aufgrund der <code>-&nbsp;2</code> bzw. <code>-&nbsp;1</code> für die Obergrenze noch genug <code>$verbleibende_felder</code> übrig lässt, damit alle drei Variablen <code>$felder_gras</code>, <code>$felder_holz</code> und <code>$felder_stein</code> mindestens den Wert <code>1</code> oder höher aufweisen können. Die danach übrige Anzahl der noch nicht verteilten Felder wird anschließend zufällig über die ausstehenden Ressourcenfelder-Variablen verteilt, wobei hier auch der Wert <code>0</code> zulässig ist.
+          </p>
+          <p>
+            Nach Anmeldung und Spielerdaten-Update erhält der Spieler Zugang zu der ersten eigentlichen Spiel-Ansicht <b>$/ftp/uebersicht.php</b>. Im Tutorial sind alle Ansichten so aufgebaut, dass zuerst Datenbankabfragen und Berechnungen durchgeführt werden, um danach die Benutzeroberfläche aufzubauen, die aus den ermittelten Daten gespeist wird. Zunächst werden die Tabellen <tt>user_resource</tt> und <tt>user_map</tt> sowie <tt>building</tt> abgefragt. Die Besonderheit bei <tt>building</tt> besteht darin, dass im Gegensatz zu den ersten beiden Tabellen pro Benutzer mehrere Einträge vorhanden sein können, sodass für das Ergebnis in <code>$gebaeude</code> mittels
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/uebersicht.php</b>
+            <pre><code>
+              if ($gebaeude != false)
+              {
+                  $result = array();
+
+                  while ($temp = mysql_fetch_assoc($gebaeude))
+                  {
+                      $result[] = $temp;
+                  }
+
+                  mysql_free_result($gebaeude);
+                  $gebaeude = $result;
+              }
+            </code></pre>
+          </div>
+          <p> 
+            alle Einträge in ein zweidimensionales Array abgeholt werden. Die erste Dimension entspricht dem Eintrag, während die zweite Dimension das assoziative Array der Ergebnis-Datenfelder enthält. Zur Verdeutlichung ein exemplarisches <code>var_dump($gebaeude)</code>:
+          </p>
+          <div>
+            <pre><code>
+              array(3) {
+                [0]=>
+                array(1) {
+                  ["building"]=>
+                  string(11) "HOLZFAELLER"
+                }
+                [1]=>
+                array(1) {
+                  ["building"]=>
+                  string(10) "STEINBRUCH"
+                }
+                [2]=>
+                array(1) {
+                  ["building"]=>
+                  string(9) "BAUERNHOF"
+                }
+              }
+            </code></pre>
+          </div>
+          <p>
+            Sodann können die Anzahlen der vorhandenen Gebäude für die Variablen <code>$bauernhoefe</code>, <code>$holzfaeller</code> und <code>$steinbrueche</code> aufsummiert werden. Die darauffolgende Abfrage für die Tabelle <tt>message</tt> verhält sich ganz ähnlich, eine Bearbeitung des Abfrage-Ergebnisses ist jedoch nicht notwendig, da die Nachrichten direkt ausgegeben werden.
+          </p>
+          <p>
+            Sind alle Vorbereitungen getroffen, werden die einzelnen Komponenten der &bdquo;Übersicht&ldquo; immer dann in das tabellenbasierende Seitenlayout eingefügt, wenn entsprechende Daten vorliegen. An dieser Stelle werden die HTML-Tabellen aber nur zur Anordnung der Seitenelemente verwendet, was noch nicht den typischen Gebrauch für ein Tabellen-Browsergame darstellt. Auf der rechten Seite werden Menüpunkte in die Tabellenzelle eingefügt, wenn die jeweiligen Gebäude vorhanden sind (hier nur bei <code>ENUM_GEBAEUDE_HANDELSHAUS</code>). Zuletzt folgt noch die direkte Ausgabe der Nachrichten aus <code>$messages</code> mit dem Versuch, sie durch den Aufruf von <code>removeAllMessages()</code> (siehe <b>$/ftp/game.inc.php</b>) aus der Datenbank zu entfernen.<br />
+            Die erwähnte Konstante <code>ENUM_GEBAEUDE_HANDELSHAUS</code> stammt übrigens aus der Datei <b>$/ftp/defines.inc.php</b>. Die Konstante hat den Sinn, den eigentlichen Datenbank-String <code>"HANDELSHAUS"</code> für die Verwendung im Attribut <tt>building.building</tt> (siehe <b>$/src/database.sql</b>) vor PHP wegzuabstrahieren, gleiches gilt für alle dort definierten <code>ENUM</code>-Konstanten. Für die <code>ENUM_GEBAEUDE</code>-Konstanten wird eine Hilfsfunktion <code>translateEnumGebaeudeToDisplayText()</code>, für <code>ENUM_RESSOURCE</code>-Konstanten eine <code>translateEnumResourceToDisplayText()</code>-Hilfsfunktion angeboten, um bei Bedarf für die Typen entsprechende GUI-Anzeigetexte erhalten zu können.
+          </p>
+          <p>
+            Während <b>$/ftp/uebersicht.php</b> primär auf die Darstellung von Datenbankwerten ausgerichtet ist, kann der Spieler erstmalig in <b>$/ftp/bauen.php</b> eine Aktion auslösen. Die Datei beginnt ganz ähnlich, enthält aber in den Datenbank-Abfragen für <code>$gebaeude</code> und <code>$bauschlange</code> zusätzlich die Bedingung <code>WHERE&nbsp;`building`='".ENUM_GEBAEUDE_HANDELSHAUS."'</code> mit dem Ziel, später die Existenz oder die Beauftragung eines Handelshauses herausfinden zu können. Im Fall von <code>isset($_POST['gebaeude'])&nbsp;!==&nbsp;true)</code> werden abhängig von der Anzahl der noch zur Verfügung stehenden Ressourcen-Felder die Gebäude angeboten, die beauftragt werden können. Das Handelshaus kann nur gebaut werden, wenn der Spieler noch keins hat und sich auch noch keines im Bau befindet. Klickt der Spieler dann auf &bdquo;Senden&ldquo; (womit der Fall <code>isset($_POST['gebaeude'])&nbsp;===&nbsp;true</code> eintritt), wird das ausgewählte Gebäude an die Funktion <code>insertNewBuilding()</code> der <b>$/ftp/game.inc.php</b> weitergegeben.<br />
+            <code>insertNewBuilding()</code> führt zunächst erneut Abfragen für <code>$map</code> und <code>$ressourcen</code> durch, um dann beim <code>switch&nbsp;($gebaeude)</code> für jede Gebäude-Art zu überprüfen, ob genügend freie Ressourcen-Felder und ausreichend Rohstoffe zum Bau vorhanden sind. Diese Aufgabe muss bei der Beauftragung und kann nicht in <b>$/ftp/bauen.php</b> wahrgenommen werden, denn sonst wäre es möglich, mehrere <b>$/ftp/bauen.php</b>-Fenster mit noch ausreichenden Rohstoffen zu öffnen und dann via &bdquo;Senden&ldquo; unerlaubterweise mehrere Gebäude zu beauftragen, obwohl die Rohstoffe insgesamt gar nicht für alle Aufträge ausreichen würden. Ist die Prüfung erfolgreich verlaufen, wird das Gebäude in die Tabelle <tt>build_queue</tt> eingetragen, wobei z.B. <code>CURDATE()&nbsp;+&nbsp;3</code> für das Attribut <tt>build_queue.ready</tt> den Fertigstellungstermin (Bauzeit) auf 3 Tage von heute an setzt. Das Ressourcen-Feld wird belegt und vom jeweils betroffenen Attribut der <tt>user_map</tt>-Tabelle abgezogen, ebenso die zum Bau verwendeten Rohstoffe von der Tabelle <tt>user_resource</tt>. Bei <code>case&nbsp;ENUM_GEBAEUDE_HANDELSHAUS</code> muss darüber hinaus nochmals via <code>$bestehende_gebaeude</code> nachgeprüft werden, ob ein Handelshaus bereits besteht oder sich im Bau befindet, denn in <b>$/ftp/bauen.php</b> kann durch Manipulation in den HTTP-POST-Daten ein Handelshaus übergeben werden, obwohl der Menüpunkt gar nicht zur Auswahl stand.
+          </p>
+          <p>
+            Die Gebäude in der Bauschlange, deren Fertigstellung und die Gewinnung von Rohstoffen ist von da an nur noch für die Spielerdaten-Aktualisierung im Rahmen der Anmeldung von Bedeutung. Die einzige Ausnahme stellt das Handelshaus dar, welches u.a. die Option &bdquo;Senden&ldquo; in <b>$/ftp/uebersicht.php</b> bereitstellt. Die dann verlinkte <b>$/ftp/senden.php</b> verhindert, dass die Seite zur Anzeige gelangt, wenn kein fertiggestelltes Handelshaus vorhanden ist. Die Aufgabe des Scripts besteht lediglich darin, die Menge und Rohstoff-Art sowie den Namen des Rohstoff-Empfängers und -Absenders an <code>sendResources()</code> der <b>$/ftp/game.inc.php</b> zu übergeben. Dort wird neben einigen Plausibilitätsprüfungen (Ermittlung der ID des Empfängers aufgrund des Empfänger-Namens zeigt gleichzeitig, ob der Benutzer überhaupt existiert) ein Array <code>$messages</code> angelegt, weches die Nachricht aufnimmt, die dem Empfänger anlässlich des Erhalts der Rohstoffe zugestellt wird. Um die Aktion auszuführen, müssen dem aktuellen Benutzer (d.h. dem Absender) die Rohstoffe abgezogen und dem Empfänger gutgeschrieben werden.
+          </p>
+          <p>
+            Die Option &bdquo;Handeln&ldquo; in <b>$/ftp/uebersicht.php</b> wird ebenfalls vom Handelshaus freigeschaltet und kann über <b>$/ftp/handeln.php</b> aufgerufen werden. Erst hier kommt der Tabellen-Charakter des Spiels in vollem Umfang zum Tragen, während die vorangegangenen Seiten eher unterstützende Aufgaben wahrnehmen:
+          </p>
+          <img src="tabellen_browsergames_mit_php_3.png" width="258px" height="398px" alt="Handelshaus-Menü in typischem Tabellen-Browsergame-Look mit aktiven Angeboten und Formular, um einen neuen Handel einzutragen" title="Handelshaus-Menü in typischem Tabellen-Browsergame-Look" />
+          <p>
+            Die obere HTML-Tabelle repräsentiert jedes Handelsangebot als separate Zeile. Neben der reinen Anzeige von Informationen ist aber gleichzeitig auch ein HTML-Formular integriert: in der Spalte &bdquo;Aktion&ldquo; wird mit &bdquo;Annehmen&ldquo; und &bdquo;Löschen&ldquo; nicht nur signalisiert, ob es sich um ein Angebot eines fremden Spielers oder um ein eigenes handelt, sondern die Radio-Buttons und die &bdquo;Senden&ldquo;-Schaltfläche erlauben es, fremde Angebote anzunehmen oder eigene zurückzuziehen. Das untere Formular mit &bdquo;Suche&ldquo; und &bdquo;Gegen&ldquo; dient der Platzierung eines neuen Angebots, wobei &bdquo;Suche&ldquo; den erhofften Rohstoff angibt. Der typische Tabellen-Charakter besteht also darin, dass über Tabellen-Übersichten und Formulare die Steuerung sowie die Darstellung des gesamten Spiels erfolgt, während die Spiel-Logik im Hintergrund die eingetragenen Zahlen verrechnet und entsprechende Datenbank-Operationen ausführt.<br />
+            Um einen solchen Effekt zu erreichen, reagiert <b>$/ftp/handeln.php</b> auf drei unterschiedliche Stati: im einfachsten Fall wird die Seite lediglich angebrowsed (erkennbar an den nicht gesetzten Elementen im <code>$_POST</code>-Array), sodass lediglich die HTML-Ausgabe generiert werden muss. Weil in den anderen beiden Fällen nach der Ausführung einer Aktion nicht wieder die komplette Seite aufgebaut wird (analog zu <b>$/ftp/bauen.php</b> und <b>$/ftp/senden.php</b>), sondern eine Meldung samt Link zur Übersichtsseite erscheint, kann die Abfrage der <tt>trading</tt>-Datenbanktabelle auf ihren <code>if</code>-Block beschränkt werden und muss nicht global am Anfang des Codes durchgeführt werden. <code>&lt;form&nbsp;/&gt;</code> und <code>&lt;table&nbsp;/&gt;</code> mit den <code>&lt;th&gt;</code>-Spaltenüberschriften und der letzten Zeile via <code>colspan="3"</code> für den &bdquo;Senden&ldquo;-Button bilden daraufhin den Rahmen, in den über die <code>foreach</code>-Schleife pro Ergebnis-Zeile der Datenbankabfrage in <code>$trades</code> die einzelnen Zellen des Handels eingefügt werden. Somit ist die Handelstabelle komplett datengesteuert, denn die Anzahl der verfügbaren Handelsoptionen kann variieren von gar keinem bis zu einer langen Liste an Angeboten. Daneben ändern sich die verfügbaren Einträge im Laufe des Spiels durch die anderen beiden Fälle des Scripts. Bei der ersten Abprüfung des <code>$_POST</code>-Arrays haben sich die Existenz der Elemente <code>$_POST['aktion']</code> und der Gruppe <code>$_POST['suche_menge']</code>, <code>$_POST['suche_ressource']</code>, <code>$_POST['gegen_menge']</code> sowie <code>$_POST['gegen_ressource']</code> gegenseitig ausgeschlossen. Ist die Vierer-Gruppe gesetzt, wurde offensichtlich über das untere Eingabe-Formular ein neues Angebot eingetragen. Dieses wird mit <code>placeResourceTrade()</code> der <b>$/ftp/game.inc.php</b> in die Datenbank übernommen. Ganz ähnlich verhält sich der Fall bei <code>$_POST['aktion']</code> mit dem Unterschied, dass hier über das obere Tabellenformular via Radio-Button die ID des betroffenen Angebots übermittelt wurde, die dann an <code>handleResourceTrade()</code> der <b>$/ftp/game.inc.php</b> weitergegeben wird. Hierbei wird jedoch nicht angegeben, ob es sich um ein anzunehmendes oder zu löschendes Angebot handelt, diese Unterscheidung muss später erneut getroffen werden. Auf diese Weise werden die Einträge der HTML-Tabelle bearbeitet, sofern die ausgelösten Datenbank-Operationen in den Funktionen der <b>$/ftp/game.inc.php</b> erfolgreich verlaufen.
+          </p>
+          <p>
+            Nachdem nun die einzelnen PHP-Seiten des Tabellen-Browsergames erläutert wurden, müssen nun noch die übrig gebliebenen Teile der Spiel-Mechanik aus der <b>$/ftp/game.inc.php</b> angesprochen werden. Dort stehen folgende Funktionen zur Verfügung:
+          </p>
+          <ul>
+            <li><code>insertNewUser()</code></li>
+            <li><code>updateUser()</code></li>
+            <li><code>insertNewBuilding()</code></li>
+            <li><code>sendResources()</code></li>
+            <li><code>placeResourceTrade()</code></li>
+            <li><code>handleResourceTrade()</code></li>
+            <li><code>addMessages()</code></li>
+            <li><code>removeAllMessages()</code></li>
+          </ul>
+          <p>
+            <code>insertNewUser()</code>, <code>insertNewBuilding</code> und <code>sendResources()</code> sind bereits weiter oben im Text behandelt worden. <code>addMessages()</code> und <code>removeAllMessages()</code> weisen keine Besonderheiten auf, die von der üblichen PHP/MySQL-Verwendung abweichen würden. Nach den beiden Handelsfunktionen soll abschließend der eigentliche Kern, nämlich der Update-Vorgang, im Detail beleuchtet werden.
+          </p>
+          <p>
+            Nach einer Reihe von obligatorischen Plausibilitätsprüfungen wird in <code>placeResourceTrade()</code> für die Variable <code>$ressourcen</code> ermittelt, ob der aktuelle Spieler momentan überhaupt genug Rohstoffe hat, um sie für sein Angebot (die Gegenleistung im Austausch für sein Gesuch) in das Handelshaus zu transferieren. Mit diesem Trick der künstlichen Zwischenstufe des Handelshauses wird verhindert, dass Angebote aktiv sind, für die bei Annahme durch einen fremden Spieler keine Gegenleistung erbracht werden kann. In der Zeile
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/game.inc.php</b>
+            <pre><code>
+              if ($ressourcen[$gegenRessourceArt] < $gegenMenge)
+            </code></pre>
+          </div>
+          <p>
+            kann der Parameter <code>$gegenRessourceArt</code> direkt als Array-Index angewendet werden, da ihm als Argument eines der <code>ENUM_RESSOURCE</code>-Defines übergeben wurde, welche mit dem Datenbankattribut-<tt>ENUM</tt> der Tabelle <tt>trading</tt> korrespondieren. Die Rohstoffe der Gegenleistung werden daraufhin dem aktuellen Spieler abgezogen und das Angebot eingetragen. Die Bezeichnungen &bdquo;give&ldquo; und &bdquo;get&ldquo; sind aus der Sicht des anbietenden Spielers gewählt, der die Rohstoffe &bdquo;gibt&ldquo; bzw. &bdquo;bekommen&ldquo; möchte. Für den annehmenden fremden Spieler kehrt sich die Bedeutung um, denn was der aktuelle Spieler &bdquo;bekommen&ldquo; möchte, muss er geben, was sich dann in <code>handleResourceTrade()</code> zeigt.<br />
+            <code>handleResourceTrade()</code> kann aufgrund übereinstimmender Spieler-IDs erkennen, ob es sich um eine Angebots-Löschung oder -Annahme handelt. Bei der Annahme im Fall von <code>$trade['user_id']&nbsp;!=&nbsp;$userID</code> muss zuerst geprüft werden, ob der Spieler die gewünschten Rohstoffe überhaupt liefern kann. Wenn das der Fall ist, wird ihm die Gegenleistung gutgeschrieben und die geforderten Rohstoffe abgezogen. Beim Ersteller des Angebots muss dann nur noch die Gutschrift der gelieferten Rohstoffe erfolgen, da die Gegenleistung schon vorher beim Transfer in das Handelshaus abgezogen wurde. Zuletzt wird das Angebot aus der Liste genommen. Wenn die Bedingung <code>$trade['user_id']&nbsp;==&nbsp;$userID</code> zugrifft, soll ein eigenes Angebot zurückgezogen werden. Dafür müssen die im Handelshaus gelagerten Rohstoffe an den Spieler zurückgegeben und der entsprechende Eintrag aus der Tabelle <tt>trading</tt> gelöscht werden.
+          </p>
+          <p>
+            Die wichtigste Aufgabe übernimmt jedoch <code>updateUser()</code>, welches sämtliche Werte eines Spielers auf den neuesten Stand bringt. Der Aufruf erfolgt im Tutorial bisher nur bei der Anmeldung, könnte aber ebenso vor einem Kampf<sup>1</sup> notwendig sein &ndash; etwa weil der verteidigende Spieler in der Bauschlange etliche Festungen<sup>1</sup> fertiggestellt haben könnte, welche aber keine Anwendung finden würden, wenn sie nicht vorher durch <code>updateUser()</code> in die Gebäudeliste übergehen. Zu diesem Zweck werden für die Variable <code>$bauschlange</code> alle Datensätze abgefragt, deren Fertigstellungstermin in <tt>build_queue.ready</tt> in der Vergangenheit liegt. Die Elemente in <code>$bauschlange</code> werden anschließend direkt in die Tabelle <tt>building</tt> eingefügt. Insbesondere die Belegung des Attributs <tt>building.timer</tt> hat zur Folge, dass noch für den selben Tag der &bdquo;Übernahme&ldquo; Erträge erzielt werden, denn das Gebäude stand ohnehin erst am Folgetag nach Ablauf der Bauzeit zur Verfügung. Danach können die übernommenen Gebäude aus der Bauschlange entfernt werden. Nachdem nun alle vorhandenen Gebäude in der Tabelle <tt>building</tt> vorliegen, wird ihr Ertrag ermittelt. Die alten Rohstoff-Bestände in <code>$ressourcen</code> bilden die Grundlage der Berechnung, wobei alle Gebäude des Spielers mit veraltetem <tt>building.timer</tt>-Attribut via <code>$gebaeude</code> bereitgestellt werden. Die Schleife
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/game.inc.php</b>
+            <pre><code>
+              foreach ($gebaeude as $ein_gebaeude)
+              {
+                  $tagedifferenz = strtotime(date("Y-m-d")) - strtotime($ein_gebaeude['timer']);
+                  $tagedifferenz = floor($tagedifferenz / 86400);
+
+                  if ($tagedifferenz < 0)
+                  {
+                      // Sicher ist sicher...
+                      continue;
+                  }
+
+                  switch ($ein_gebaeude['building'])
+                  {
+                  case ENUM_GEBAEUDE_BAUERNHOF:
+                      $bauernhoefe += $tagedifferenz;
+                      break;
+                  case ENUM_GEBAEUDE_HOLZFAELLER:
+                      $holzfaeller += $tagedifferenz;
+                      break;
+                  case ENUM_GEBAEUDE_STEINBRUCH:
+                      $steinbrueche += $tagedifferenz;
+                      break;
+                  }
+              }
+            </code></pre>
+          </div>
+          <p>
+            wird pro Gebäude die Anzahl der Tage seit der letzten Rohstoff-Aktualisierung berechnet, um dann gemäß <code>$ein_gebaeude['building']</code> auf die jeweils zutreffende Variable <code>$bauernhoefe</code>, <code>$holzfaeller</code> oder <code>$steinbrueche</code> aufsummiert zu werden. Im Code darunter greift dann die im Konzept festgelegte Überlebens-Priorisierung: da Bauernhöfe keine Betriebskosten haben, kann ihr Ertrag ganz einfach mittels <code>$nahrung&nbsp;+=&nbsp;2&nbsp;*&nbsp;$bauernhoefe</code> auf die alte Nahrungs-Menge aufgeschlagen werden. Der Faktor <code>2</code> ergibt sich aus der Einheiten-Aufstellung des Konzepts. Auf dieser Grundlage basierend werden sodann pro hypotetischem &bdquo;Holzfäller-Tag&ldquo; und &bdquo;Steinbruch-Tag&ldquo; die Betriebskosten von 1 Nahrung abgezogen, dafür aber der Ertrag in <code>$holz</code> oder <code>$stein</code> gutgeschrieben<sup>2</sup>. Die Verteilung geschieht nicht anhand einer vom Spieler eingestellten Priorisierung, noch zu gleichen Teilen, noch anhand einer manuellen Zuteilung, sondern fest vorbelegt, wodurch die weitere Ressourcen-Schöpfung einfach abbricht, sobald <code>$nahrung</code> den Wert <code>0</code> erreicht. Dies bedeutet, dass auch alte Nahrungsvorräte aufgebraucht werden oder beispielsweise alle Nahrungsreserven von den Holzfällern beansprucht werden, während gleichzeitig kein einziger Steinbruch versorgt wird und Rohstoffe abbauen kann. Nach den beiden Schleifen stehen die neuen Rohstoff-Werte des Spielers fest und werden in der Datenbank vermerkt. <tt>building.timer</tt> wird auf das aktuelle Datum gesetzt, damit bei der nächsten Spielerdaten-Aktualisierung festgestellt werden kann, ob und in welchem zeitlichen Verlauf für das betreffende Gebäude die Rohstoff-Gewinnung nachberechnet werden muss. Es sind ferner keine negativen Werte möglich, denn wenn Betriebskosten nicht gedeckt werden können, stoppt das lediglich alle weiteren Förderungs-Prozesse. Die Gesamt-Bilanz für <code>$messages</code> kann dagegen allerdings negativ ausfallen, da dort die Differenz des neuen Wertes zum alten Wert angegeben wird.
+          </p>
+        </div>
+        <div>
+          <h3>Zusammenfassung und Ausblick</h3>
+          <p>
+            Die hier aufgezeigte Implementierung veranschaulicht einige elementare Bestandteile traditioneller Tabellen-Browsergames. Es kommen sowohl Echtzeit-Effekte (&bdquo;Handeln&ldquo;, obwohl nicht im Sinne von AJAX o.ä.) als auch runden-basierende Einflüsse (Spielerdaten-Aktualisierung mit Tagen als Runde) zum Tragen, ohne dass besondere Anforderungen an das Webserver-Umfeld gestellt werden. Möglich ist dies durch Ausnutzung von Timern in der Datenbank, was dafür aber mit Performance- und Skalierungs-Einbußen einhergeht. Die Optimierungs-Diskussion (auch hinsichtlich der Datenbank-Struktur) ist jedoch nicht Gegenstand dieses Tutorials, sondern die zugrundeliegende Technik dieser bestimmten Sorte von Spielen. Ausgehend vom vorgestellten Code kann man nun Optimierungen vornehmen, die im Konzept vorgesehenen Erweiterungen einbauen (gekennzeichnet über die Fußnote <sup>1</sup>) oder aber noch vielfältige eigene Wirtschaftszweige und Militär-Prozeduren entwerfen. Änderungen an Werten, Berechnungen, Benennungen und Abläufen geben ein Gefühl für die internen Zusammenhänge des Projekts. Auch über die Grenzen des Tutorials hinaus stellen Tabellen-Browsergames eine solide Grundlage für ernsthafte Browsergame-Entwicklung dar, denn ohne große Mühe kann die Anzeige mit CSS aufgewertet, durch Story-Texte belebt, mithilfe von Symbol-Bildern greifbar gemacht und schließlich unter Einsatz einer globalen Welt-Karte ganzheitlich abgerundet werden. Gerade letzteres bietet eine breite Palette an Möglichkeiten, z.B. die Kombination mit bereits vorgestellten Techniken wie <a href="http://www.skreutzer.de/browsergames/technologien/reine_image_maps.html">reinen Image-Maps</a> oder <a href="http://www.skreutzer.de/browsergames/technologien/image_maps_mit_einfacher_php_unterstuetzung.html">Image-Maps mit einfacher PHP-Unterstützung</a>.
+          </p>
+        </div>
+        <div>
+          <h3>Fazit</h3>
+          <p>
+            Die Technologie der Tabellen-Browsergames deckt ein breites Spektrum an Spiele-Genres ab. Besonders im Strategie- und Aufbauspiel-Bereich werden die Tabellen-PHP/MySQL-Vertreter noch für viele Jahre nicht zu verdrängen sein. Da das Hauptaugenmerk auf der Umsetzung der Spiellogik liegt, können Programmierer und Designer ihre Zeit für die konkrete Ausgestaltung ihrer Vorstellungen einsetzen. Trotzdem erreicht die Komplexität schnell ein kritisches Maß, ab welchem eine ordentliche Organisation unverzichtbar wird. Zur Verdeutlichung sei nur mal die Spielerdaten-Aktualisierung genannt, die bei größerem Umfang zwingend aufgeteilt und stark optimiert werden müsste, um die Belastung infolge von Anmeldung/Ereignissen einzuschränken und die Wartbarkeit des Codes zu gewährleisten. Darüber hinaus werden Fehler und Seiteneffekte zu einem großen Risiko, dem begegnet werden will. Mit zunehmender Erfahrung, einigen technischen Tricks sowie außerordentlich viel Geduld rücken dann aber auch bald die bekannteren, erfolgreicheren Seiten in greifbare Nähe. Eine Aussicht, welche zu erreichen für einen Privatmenschen ohne große Mittel nicht gänzlich unmöglich ist.
+          </p>
+        </div>
+        <div>
+          <h3>Fußnoten</h3>
+          <ol>
+            <li>
+              Im Beispiel nicht implementiert.
+            </li>
+            <li>
+              Man kann die Ertrags-Ermittlung sicher auch rechnerisch und viel eleganter lösen, anstatt über die zwei ungeeigneten Schleifen.
+            </li>
+          </ol>
+        </div>
+
+      </div>
+
+
+      <div>
+        <hr />
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Tabellen-Browsergames mit PHP&ldquo;
+      </div>
+
+
+  </body>
+
+
+</html>

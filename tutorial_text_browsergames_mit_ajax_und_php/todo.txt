@@ -1,0 +1,1 @@
+Die neue Verwendung von $args macht HTML Injection möglich, hier muss in Zukunft escaped werden!

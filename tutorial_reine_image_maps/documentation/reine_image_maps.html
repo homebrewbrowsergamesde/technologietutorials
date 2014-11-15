@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Copyright (C) 2011-2012  Stephan Kreutzer
+
+This file is part of Tutorial "Reine Image-Maps".
+
+Tutorial "Reine Image-Maps" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Reine Image-Maps" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Reine Image-Maps". If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+
+  <head>
+
+
+      <title>/skreutzer.de/browsergames/technologien/: Tutorial &bdquo;Reine Image-Maps&ldquo;</title>
+
+      <meta name="description" content="skreutzer.de: Technologie-Tutorial zu reinen Image-Maps." />
+      <meta name="copyright" content="Stephan Kreutzer" />
+      <meta name="author" content="Stephan Kreutzer" />
+      <meta name="keywords" content="Tutorial,Browsergame,Programmierung,Entwicklung,HTML,Image Maps" />
+      <meta http-equiv="expires" content="1296000" />
+      <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+
+  </head>
+
+
+  <body>
+
+
+      <div>
+        <h1>skreutzer.de</h1>
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Reine Image-Maps&ldquo;
+        <hr />
+      </div>
+
+
+      <div>
+        <h2>Tutorial &bdquo;Reine Image-Maps&ldquo;</h2>
+        <div>
+          <h3>Copyright</h3>
+          <pre>
+Tutorial "Reine Image-Maps" (C) 2011-2012  Stephan Kreutzer
+
+Tutorial "Reine Image-Maps" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Reine Image-Maps" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Reine Image-Maps". If not, see &lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.
+
+The complete source code is available at &lt;<a href="http://www.skreutzer.de/browsergames/technologien/reine_image_maps.html">http://www.skreutzer.de/browsergames/technologien/reine_image_maps.html</a>&gt;.
+          </pre>
+        </div>
+        <p>
+          Download des vollständigen Quellcodes (Version <a href="tutorial_reine_image_maps_20120626T2216.tar.gz">20120626T2216</a>). Kurzes <a href="http://www.youtube.com/watch?v=maJea83QzUg&amp;list=PL200E9DE560E3B5BC">Beschreibungsvideo</a> auf youtube.com. Ausführlicheres <a href="http://www.youtube.com/watch?v=vcr0sDalbEU&amp;list=PLF1A3D26D320AFB38">Code Review</a> zum Tutorial-Beispielcode auf youtube.com.
+        </p>
+        <div>
+          <h3>Einführung</h3>
+          <p>
+            Wer als Privatperson eine eigene Browsergame-Idee verwirklichen will, scheitert zumeist früher oder später an den technischen Anforderungen, an der fehlenden Kapazität oder an der Komplexität, die ein solches Projekt aufwirft &ndash; Grund hierfür sind oft die zu hohen Erwartungen, die man sich, anderen oder an das Ergebnis stellt. Die hier vorgestellte Technologie der reinen Image-Maps ist dagegen optimal geeignet für Anfänger, die mit geringer Erwartungshaltung einfache Ergebnisse erzielen wollen und womöglich nicht den Aufwand betreiben können, welcher nötig wäre, um gleich zu Beginn ein professionelles Spiel von konkurrenzfähiger Qualität auf die Beine zu stellen. Doch auch dem Fortgeschrittenen können sich die reinen Image-Maps als ideales Format für solche Ideen entpuppen, die von einem dementsprechenden Stil leben. Da die Anforderungen äußerst gering sind, kann beinahe jeder, welcher einige wenige Grundlagen im Umgang mit Dateien und in der Bildbearbeitung beherrscht, seine eigenen Vorstellungen Wirklichkeit werden lassen. Die besagte Technik bringt es gleichzeitig aber auch mit sich, dass es sich in erster Linie nicht wirklich um ein „Spiel“ handelt, dafür aber um eine virtuelle Welt oder um eine sonstwie interaktive Oberfläche. Aus diesem Werkzeug kann man schon eine Menge (Kreativität und Fleiß vorausgesetzt) herausholen.
+          </p>
+          <p>
+            Um eine ungefähre Vorstellung davon zu erhalten, was reine Image-Maps leisten können und was nicht, wie selbige funktionieren und für welche Zwecke sie geeignet sind, hier die Eckdaten: bei Image-Maps handelt es sich im Grunde lediglich um Bilder/Grafiken, auf denen Bereiche definiert werden, welche als Links fungieren. Durch geschickte Verlinkung kann je nach Bildern und Konzeption eine primitive (weil statisch vorgegebene) Interaktivität erreicht werden. Da allein HTML und ein Grafikprogramm beteiligt sind, ist die Umsetzung denkbar einfach.
+          </p>
+        </div>
+        <div>
+          <h3>Umsetzung einer virtuellen Welt</h3>
+          <p>
+            Im Projektordner ist obligatorisch eine <b>index.html</b>-Datei zu erstellen, welche vom Webserver automatisch als Einstiegspunkt verwendet werden wird. Der Inhalt könnte in etwa so aussehen:
+          </p>
+          <div>
+            <b>$/ftp/index.html</b>
+            <pre><code>
+              &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+              &lt;!DOCTYPE html
+                  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+
+              &lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;
+                &lt;head&gt;
+                  &lt;title&gt;Virtuelle Welt&lt;/title&gt;
+                  &lt;meta http-equiv="expires" content="1296000" /&gt;
+                  &lt;meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" /&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                  &lt;div&gt;
+                    &lt;img src="index.png" border="1" alt="Einstiegspunkt" usemap="#default" /&gt;
+                    &lt;map name="default"&gt;
+                      &lt;area shape="poly" coords="644,368,711,368,711,354,786,384,711,416,711,400,644,400" href="ansicht_1.html" alt="Start-Schild" title="Start" /&gt;
+                    &lt;/map&gt;
+                  &lt;/div&gt;
+                &lt;/body&gt;
+              &lt;/html&gt;
+            </code></pre>
+          </div>
+          <p>
+            Zuerst sollten die Meta-Daten geändert werden. Das Tag <code>&lt;title&nbsp;/&gt;</code> könnte z.B. den Projektnamen oder den Namen der virtuellen Welt enthalten. Es können ferner die üblichen Meta-Angaben für Suchmaschinen wie <code>&lt;meta name="description" content="Einstiegspunkt der virtuellen Welt"&nbsp;/&gt;</code> hinzugefügt werden. Insbesondere hinsichtlich <code>&lt;meta name="robots" content="noindex"&nbsp;/&gt;</code> sollte in allen HTML-Dateien des Projekts darauf geachtet werden, welche Seiten in den Index einer Suchmaschine aufgenommen werden sollen, und welche nicht. Entweder können alle Seiten aufgenommen werden, damit sowohl Text als auch alle Bilder über eine Suchmaschine auffindbar sein sollen, oder alternativ können nur ausgewählte Seiten (z.B. der Einstiegspunkt) freigegeben werden, damit eine Suchanfrage nicht gleich alle Bilder und Ansichten der virtuellen Welt verrät.<br />
+            Der einzigste wirkliche Inhalt der Seite ist hier ein Bild <b>index.png</b> via <code>&lt;img&nbsp;/&gt;</code>. Das Attribut <code>alt</code> legt den Text fest, welcher angezeigt wird, wenn das Bild nicht gefunden werden konnte und welcher für blinde Benutzer vorgelesen werden kann &ndash; normalerweise ist er aber nicht sichtbar. Das <code>usemap</code>-Attribut verweist auf das <code>&lt;map&nbsp;/&gt;</code>-Tag darunter: dort werden für die Bildfläche von <b>index.png</b> einzelne Bereiche (engl. „area“) definiert. Diese können verschiedene Grundformen aufweisen wie etwa Rechtecke, Kreise oder eben ein Polygon (<code>poly</code>) mit mehreren Ecken. Bei <code>coords</code> werden die Pixelpositionen des Bereichs festgelegt:
+          </p>
+          <img src="reine_image_maps_1.png" width="789px" height="619px" alt="Microsoft Paint mit eingezeichneten Pixel-Positionen einer anklickbaren Fläche der Image-Map" title="Pixelpositionen des anklickbaren polygonalen Bereichs der Image-Map in Microsoft Paint" />
+          <p>
+            Die Koordinaten werden als Paare von je x,y einfach hintereinandergeschrieben und können mit Grafikprogrammen oder speziellen Hilfsprogrammen einfach ausgelesen werden. Im Bild oben zeigt die Paint-Statusleiste die Koordinaten des Pixels am Mauszeiger an. Der Browser wird diese Positionen gemäß ihrer Reihenfolge verbinden und ihre Fläche als anklickbaren Link anbieten. Das letzte Positionspaar wird automatisch mit dem ersten Positionspaar verbunden, um das Polygon zu schließen. Somit wird der gelbe Pfeil der <b>index.png</b> auf eine weitere HTML-Seite verweisen. Das Verweisziel wird mit dem <code>href</code>-Attribut definiert. Neben dem herkömmlichen <code>alt</code> kommt noch das <code>title</code>-Attribut für den Tooltip-Text der Fläche hinzu. Und hier die Fläche im laufenden Betrieb:
+          </p>
+          <img src="reine_image_maps_2.png" width="187px" height="106px" alt="Titel-Text eines Image-Map-Bereichs im Browser" />
+          <p>
+            Man kann nun mit dem Mauszeiger die Schild-Fläche entlangfahren, und an jeder Stelle, die innerhalb des definierten Bereiches liegt, ändert sich der Mauszeiger zur Hand (jedenfalls bei manchen Browsern), um anzuzeigen, daß es sich um einen anklickbaren Grafikbereich handelt. Zudem ist der Titeltext zu sehen. Da das <code>&lt;img&nbsp;/&gt;</code>-Tag mit dem Attribut <code>border</code> versehen wurde, ist die ganze Grafik (<b>index.png</b>) mit der Farbe für Links (hier blau per default) umrahmt.
+          </p>
+          <p>
+            In der <b>ansicht_1.html</b> referenziert das <code>&lt;img&nbsp;/&gt;</code>-Tag dann sein jeweils passendes <b>ansicht_1.png</b>. Die Dateinamen sind selbstverständlich frei vergebbar (übrigens auch der <code>name</code> der <code>&lt;map&nbsp;/&gt;</code> inkl. korrespondierendem <code>usemap</code> des <code>&lt;img&nbsp;/&gt;</code>). Mit kryptischen Namen kann somit z.B. verhindert werden, dass ein Benutzer die einzelnen Seiten errät.
+          </p>
+          <p>
+            Durch geschickte Anordnung von aufeinander verweisenden Navigationsflächen kann so ein „begehbarer“ virtueller Raum geschaffen werden, in dem die gewünschte Welt abgebildet wird. Dabei können durchaus verschiedene Ebenen realisiert werden, wenn z.B. die Tür in <b>ansicht_1.html</b>/<b>ansicht_1.png</b> zu einer Innenansicht und der Klick auf einen Gegenstand zu einer Detailansicht führen würde. Als Grafik-Grundlage können Fotos, Zeichnungen, 3D-Szenen oder Grafikprogramm-Bilder herangezogen werden.
+          </p>
+        </div>
+        <div>
+          <h3>Bewegung und Interaktivität</h3>
+          <p>
+            In eingeschränktem Umfang ist es ferner möglich, den Eindruck von Bewegung hervorzurufen und/oder eine erhöhte Stufe der Interaktivität zu erzielen. Hierfür ändert sich beim Klick auf einen Grafikbereich nicht gleich die gesamte Seite, sondern (scheinbar) nur Teile davon. <b>bewegung_2.html</b>/<b>bewegung_2.png</b> sind lediglich leicht modifizierte Kopien von <b>bewegung_1.html</b>/<b>bewegung_1.png</b>, wobei die wichtigste Änderung wohl die Angaben in der <code>&lt;map&nbsp;/&gt;</code> sind. Während die Koordinaten der „Ausgang“-Fußmatte gleich geblieben sind, lautet Albert Einsteins Position je nach Bild anders (und ebenso der Verweis beim <code>href</code>-Attribut). Die Verlinkung stellt sich wie folgt dar:
+          </p>
+          <img src="reine_image_maps_3.png" width="592px" height="383px" alt="Darstellung von drei Bildern, die über anklickbare Flächen miteinander verbunden sind, sodass durch schnelle Klickfolge der Animations-Effekt entsteht." title="Abfolge der anklickbaren Flächen, die den Animations-Effekt hervorrufen." />
+          <p>
+            Die Tür in <b>ansicht_1</b> dient als Einstiegspunkt für den „Bewegungseffekt“ bestehend aus <b>bewegung_1</b> und <b]bewegung_2</b>. Letztere beiden sind durch Einsteins Stuhlakrobatik miteinander verknüpft und bieten darüber hinaus den Ausgang zurück zu <b>ansicht_1</b> an. Es ist jedoch unmöglich, von <b>ansicht_1</b> direkt nach <b>bewegung_2</b> zu gelangen, womit ein eindeutiger Weg zwangsweise vorgegeben wurde. Die Reihenfolge der Betrachtung legt an sich schon nahe, dass es sich nicht um völlig separate Seiten handelt, sondern <b>bewegung_1</b> Voraussetzung für <b>bewegung_2</b> ist und darum ein innerer Zusammenhang zwischen diesen beiden besteht. Viel eindeutiger ist allerdings die gleichartige grafische Gestaltung der Bewegungs-Bilder. Anstatt einzelne Teile eines Bildes auf Klick hin anders anzuordnen oder zu positionieren, könnte man sie auch „verschwinden“ lassen oder alternativ erscheinen lassen, wenn z.B. beim Klick auf eine Person anschließend eine Sprechblase mit Erklärungstext o.ä. zum Vorschein kommt. Es können mit entsprechendem Aufwand sogar komplexere Verlinkungsstrukturen aufgebaut werden, bei denen aber auch deutlich mehr Bilder bereitgestellt werden müssen. Würde man ein Memory mittels reinen Image-Maps umsetzen wollen, ergäbe das eine Vielzahl von möglichen Ansichts-Kombinationen, die alle erst einmal erstellt werden müssten. Minimale Interaktionseffekte lassen sich also problemlos umsetzen, während für komplexere Zustands- und Wahlmöglichkeiten üblicherweise eine andere Technologie zum Einsatz kommen sollte.
+          </p>
+        </div>
+        <div>
+          <h3>Fazit</h3>
+          <p>
+            Die reinen Image-Maps sind die denkbar einfachste Methode, um eine kreative Idee ohne großen Aufwand umzusetzen. Dazu ist nicht einmal ein Programmierer unbedingt notwendig, sofern der Grafiker die minimalen Anforderungen hinsichtlich der Bearbeitung der HTML-Dateien beherrscht, wodurch er sich ganz auf die Gestaltung seiner virtuellen Welt konzentrieren kann. Dieser „Vorteil“ ist gleichzeitig aber auch der größte Nachteil: der Mangel an Dynamik kann nur sehr eingeschränkt mithilfe des „Bewegungs-Tricks“ wett gemacht werden, doch auch hier stoßen die Image-Maps schnell an ihre Grenzen. Für einige Fälle könnte die Beschränkung auf HTML-Dateien durchaus positiv ins Gewicht fallen (wenn Weitergabe via CD-ROM, Zip-Archiv im E-Mail-Anhang, o.ä. erforderlich). Alles in allem handelt es sich bei den reinen Image-Maps um eine relativ spezielle Technologie, mit welcher nicht prinzipiell jede Idee realisiert werden kann; trotzdem können sie in einigen Browsergame-Nischen ihren ganz eigenen Reiz entfalten.
+          </p>
+        </div>
+      </div>
+
+
+      <div>
+        <hr />
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Reine Image-Maps&ldquo;
+      </div>
+
+
+  </body>
+
+
+</html>

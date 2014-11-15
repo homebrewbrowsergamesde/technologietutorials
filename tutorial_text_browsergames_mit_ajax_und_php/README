@@ -1,0 +1,21 @@
+This package contains a tutorial on how to implement a text adventure game
+with AJAX and PHP, where the most parts are in German language.
+
+  Tutorial "Text-Browsergames mit AJAX und PHP" (C) 2012-2013  Stephan Kreutzer
+
+  Tutorial "Text-Browsergames mit AJAX und PHP" is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, version 3 of the License.
+
+  Tutorial "Text-Browsergames mit AJAX und PHP" is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with Tutorial "Text-Browsergames mit AJAX und PHP".  If not, see <http://www.gnu.org/licenses/>.
+
+  
+See the file $/COPYING for the full license text. See the file $/INSTALL for
+installation instructions. See the file $/AUTHORS for a list of contributors.
+The tutorial text is found in the $/documentation/ directory.

@@ -1,0 +1,22 @@
+This package contains a tutorial on how to implement a browsergame
+based on HTML tables, with the most parts in German language.
+
+  Tutorial "Tabellen-Browsergames mit PHP" (C) 2011-2012  Stephan Kreutzer
+
+  Tutorial "Tabellen-Browsergames mit PHP" is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License version 3 only,
+  as published by the Free Software Foundation.
+
+  Tutorial "Tabellen-Browsergames mit PHP" is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Affero General Public License 3 for more details.
+
+  You should have received a copy of the GNU Affero General Public License 3
+  along with Tutorial "Tabellen-Browsergames mit PHP". If not, see <http://www.gnu.org/licenses/>.
+
+
+See the file $/COPYING for the full license text. See the file $/INSTALL for
+installation instructions. See the file $/AUTHORS for a list of contributors.
+The tutorial text is found in the $/documentation/ directory.
+

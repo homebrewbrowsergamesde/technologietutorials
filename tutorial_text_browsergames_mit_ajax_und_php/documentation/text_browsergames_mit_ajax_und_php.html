@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Copyright (C) 2012-2013  Stephan Kreutzer
+
+This file is part of Tutorial "Text-Browsergames mit AJAX und PHP".
+
+Tutorial "Text-Browsergames mit AJAX und PHP" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Text-Browsergames mit AJAX und PHP" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Text-Browsergames mit AJAX und PHP". If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+
+  <head>
+
+
+      <title>/skreutzer.de/browsergames/technologien/: Tutorial &bdquo;Text-Browsergames mit AJAX und PHP&ldquo;</title>
+
+      <meta name="description" content="skreutzer.de: Technologie-Tutorial zu Text-Browsergames mit AJAX und PHP." />
+      <meta name="copyright" content="Stephan Kreutzer" />
+      <meta name="author" content="Stephan Kreutzer" />
+      <meta name="keywords" content="Browsergame,Programmierung,AJAX,PHP,Text,Text-Browsergame,Text-Browsergames" />
+      <meta http-equiv="expires" content="1296000" />
+      <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+
+  </head>
+
+
+  <body>
+
+
+      <div>
+        <h1>skreutzer.de</h1>
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Text-Browsergames mit AJAX und PHP&ldquo;
+        <hr />
+      </div>
+
+
+      <div>
+        <h2>Tutorial &bdquo;Text-Browsergames mit AJAX und PHP&ldquo;</h2>
+        <div>
+          <h3>Copyright</h3>
+          <pre>
+Tutorial "Text-Browsergames mit AJAX und PHP" (C) 2012-2013  Stephan Kreutzer
+
+Tutorial "Text-Browsergames mit AJAX und PHP" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Text-Browsergames mit AJAX und PHP" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Text-Browsergames mit AJAX und PHP". If not, see &lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.
+
+The complete source code is available at &lt;<a href="http://www.skreutzer.de/browsergames/technologien/text_browsergames_mit_ajax_und_php.html">http://www.skreutzer.de/browsergames/technologien/text_browsergames_mit_ajax_und_php.html</a>&gt;.
+          </pre>
+        </div>
+        <p>
+          Download des vollständigen Quellcodes (Version <a href="tutorial_text_browsergames_mit_ajax_und_php_20130915T1503.tar.gz">20130915T1503</a>). <!-- Kurzes <a href="http://www.youtube.com/playlist?list=PLF1A3D26D320AFB38">Beschreibungsvideo</a> auf youtube.com. Ausführlicheres <a href="http://www.youtube.com/playlist?list=PLF1A3D26D320AFB38">Code Review</a> zum Tutorial-Beispielcode auf youtube.com. -->
+        </p>
+        <div>
+          <h3>Einführung</h3>
+          <p>
+            Rein textbasierte Browsergames lassen sich naturgemäß sehr leicht umsetzen, da das Web von Haus aus als Dokumenten-System konzipiert ist. Wie beispielsweise im <a href="http://www.skreutzer.de/browsergames/technologien/text_browsergames_mit_php.html">Tutorial &bdquo;Text-Browsergames mit PHP&ldquo;</a> demonstriert, können dafür die Standard-Bedienelemente für Web-Formulare verwendet werden. Diese Technik allein genügt jedoch nicht, um das typische Spielgefühl von Textadventures zu erzeugen, da ein Medienbruch zwischen dem Lesen und der Eingabe hingenommen werden muss. Daher wird der Formular-Übermittlungsmechanismus durch asynchronen Nachrichten-Austausch ersetzt, was eine traditionelle Terminal-Interaktion nachbildet. Dementsprechend erfolgt die Steuerung nicht mehr länger mittels einer Art Multiple-Choice, sondern durch die Formulierung von Anweisungen. Der Spieler muss nun erstens gültige und zweitens die jeweils passenden Befehle finden, um das Spielgeschehen in seinem Sinne voranzutreiben.
+          </p>
+          <p>
+            Da bei diesem Ansatz AJAX zum Einsatz kommt, ergibt sich die Notwendigkeit der Client-Programmierung, die allerdings ob der primitiven Spiel-Oberfläche relativ einfach mit wenig zusätzlichem JavaScript über das reine AJAX hinaus realisiert werden kann, da sich das Spiel auf Darstellung und Entgegennahme von Text beschränkt. Serverseitig müssen die Eingaben geparst (d.h. zerlegt und interpretiert) werden, um daraufhin Datenbank-Manipulationen und die Generierung der Ausgabe auszulösen. Zu diesem Zweck sind programmatische Hilfsmittel (Libraries) erforderlich, um dem Entwickler Verwaltungsaufgaben abzunehmen und die Erstellung der eigentlichen Spielinhalte zu erleichtern. Ein Vorteil der Technologie liegt in dem modularen Aufbau der Spiel-Engine begründet, was sich insbesondere in der strikten Trennung zwischen Libraries und der Spiel-Szenen zeigt, sodass das Spiel jederzeit veränderbar ist, in den meisten Fällen sogar im Live-Betrieb (solange die Daten durch eine Anpassung nicht in einen inkonsistenten Zustand geraten). Der Entwickler erhält damit die Möglichkeit, Variationen und Erweiterungen ohne großen Aufwand einpflegen zu können.
+          </p>
+        </div>
+        <div>
+          <h3>Spielkonzept</h3>
+          <p>
+            Konzeptseitig müssen Entscheidungen zum Story-Telling und zur allgemeinen Stimmigkeit getroffen werden. Entscheidungsbäume müssen entworfen und ein Vokabular definiert werden. Der Befehlssatz kann sehr grob ausfallen oder eine umfassende linguistische Satzanalyse vornehmen. Im Beispiel-Projekt wird allerdings nur ein primitiver Befehlswortschatz gebraucht:
+          </p>
+          <ul>
+            <li><tt>BEENDEN</tt></li>
+            <li><tt>BENUTZE &lt;Gegenstand&gt; &lt;Anzahl&gt;</tt></li>
+            <li><tt>GEHE &lt;Ziel&gt;</tt></li>
+            <li><tt>HILFE</tt></li>
+            <li><tt>INVENTAR</tt></li>
+            <li><tt>NEHME &lt;Gegenstand&gt; &lt;Anzahl&gt;</tt></li>
+          </ul>
+          <p>
+            <tt>HILFE</tt> wird genau diese obige Befehlsliste anzeigen. <tt>GEHE</tt> dient offensichtlich der räumlichen Navigation zwischen verschiedenen &bdquo;Szenen&ldquo;, auf denen die Befehle ausgeführt werden können. Je nach Szene soll ein- und derselbe Befehl zu unterschiedlichen Resultaten führen, womit quasi die Szene den Kontext für den Befehl liefert und folglich auch seine konkrete Bedeutung implementieren muss. <tt>INVENTAR</tt> zeigt eine Liste der Gegenstände im Inventar, wohinein mit <tt>NEHME</tt> Gegenstände aufgenommen werden können, während <tt>BENUTZE</tt> für einen Gegenstand (dessen Verfügbarkeit im Inventar möglichst nachgeprüft werden sollte) eine Interaktion auf der Szene auslöst, sofern dies vorgesehen ist. Somit besteht der eigentliche Spielablauf komplett aus Inventar-Aktivitäten, da <tt>BEENDEN</tt> und <tt>HILFE</tt> nicht zum Spielgeschehen beitragen und <tt>GEHE</tt> meistens keinen anderen Zweck erfüllt, als den Kontext für die Inventar-Aktion zu versetzen. Die Befehle müssen unter anderem derart eingerichtet werden, dass ein &bdquo;globales Standardverhalten&ldquo; bereitgestellt wird, wenn eine Szene keine spezielle Implementierung für einen Befehl bietet. Dieser simple Befehlssatz wird in einem Zukunfts-Weltraum-Setting zum Einsatz kommen. Die Spielwelt ist schnell umrissen:
+          </p>
+        </div>
+
+        <div>
+          <p>
+            Fortsetzung folgt...
+          </p>
+        </div>
+
+
+      </div>
+
+
+      <div>
+        <hr />
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Text-Browsergames mit AJAX und PHP&ldquo;
+      </div>
+
+
+  </body>
+
+
+</html>

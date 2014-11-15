@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Copyright (C) 2012  Stephan Kreutzer
+
+This file is part of Tutorial "Text-Browsergames mit PHP".
+
+Tutorial "Text-Browsergames mit PHP" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Text-Browsergames mit PHP" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Text-Browsergames mit PHP". If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+
+  <head>
+
+
+      <title>/skreutzer.de/browsergames/technologien/: Tutorial &bdquo;Text-Browsergames mit PHP&ldquo;</title>
+
+      <meta name="description" content="skreutzer.de: Technologie-Tutorial zu Text-Browsergames mit PHP." />
+      <meta name="copyright" content="Stephan Kreutzer" />
+      <meta name="author" content="Stephan Kreutzer" />
+      <meta name="keywords" content="Browsergame,Programmierung,PHP,Text,Text-Browsergame,Text-Browsergames" />
+      <meta http-equiv="expires" content="1296000" />
+      <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+
+  </head>
+
+
+  <body>
+
+
+      <div>
+        <h1>skreutzer.de</h1>
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Text-Browsergames mit PHP&ldquo;
+        <hr />
+      </div>
+
+
+      <div>
+        <h2>Tutorial &bdquo;Text-Browsergames mit PHP&ldquo;</h2>
+        <div>
+          <h3>Copyright</h3>
+          <pre>
+Tutorial "Text-Browsergames mit PHP" (C) 2012  Stephan Kreutzer
+
+Tutorial "Text-Browsergames mit PHP" is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 only,
+as published by the Free Software Foundation.
+
+Tutorial "Text-Browsergames mit PHP" is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with Tutorial "Text-Browsergames mit PHP". If not, see &lt;<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.
+
+The complete source code is available at &lt;<a href="http://www.skreutzer.de/browsergames/technologien/text_browsergames_mit_php.html">http://www.skreutzer.de/browsergames/technologien/text_browsergames_mit_php.html</a>&gt;.
+          </pre>
+        </div>
+        <p>
+          Download des vollständigen Quellcodes (Version <a href="tutorial_text_browsergames_mit_php_20120903T0747.tar.gz">20120903T0747</a>). Kurzes <a href="http://www.youtube.com/watch?v=1kz02a1-N8s&amp;list=PL200E9DE560E3B5BC">Beschreibungsvideo</a> auf youtube.com. Ausführlicheres <a href="http://www.youtube.com/watch?v=zZJ4kZmhBc8&amp;list=PLF1A3D26D320AFB38">Code Review</a> zum Tutorial-Beispielcode auf youtube.com.
+        </p>
+        <div>
+          <h3>Einführung</h3>
+          <p>
+            Bei Text-Browsergames liegt im Gegensatz zu <a href="tabellen_browsergames_mit_php.html">Tabellen-Browsergames</a> der Schwerpunkt nicht so sehr auf Werte-Listen und deren Manipulation, sondern es ist eher eine &bdquo;flachere&ldquo; Darstellung mittels Textelementen, Links und Formularen vorgesehen. Folglich bietet sich diese Technologie für Spiele an, die Entscheidungs-Abfolgen als zentrales Spielelement einsetzen.
+          </p>
+          <p>
+            Ein besonderes Merkmal der Technik ist die individuelle Programmierung zahlreicher einzelner Seiten, welche jeweils eine Spielsituation samt den verfügbaren Optionen generieren. Eine Seite an sich weist einen vergleichsweise geringen Komplexitätsgrad auf, da sowohl für die Werte-Manipulation in der MySQL-Datenbank als auch für die Generierung von HTML-Formularen eine eigene PHP-Bibliothek implementiert wird, obwohl in Sonderfällen stets auch separate HTML-Ausgaben erzeugt werden. Bereichert wird das Spiel durch globale Menüs und Übersichten, die von überall aus aufgerufen werden können und entweder rein informativen Charakter haben oder alternativ Einfluss auf das Spielgeschehen nehmen.
+          </p>
+        </div>
+        <div>
+          <h3>Spielkonzept</h3>
+          <p>
+            Die Konzeptionsphase bei Spielen dieser Art konzentriert sich in erster Linie auf die Planung der Seiten und deren Beziehungen untereinander. Aufgrund der technologischen Eigenheiten soll ein einfaches Adventure-Spiel realisiert werden. Hierfür muss zunächst ein schlüssiges Umfeld definiert werden, sprich: der Rahmen, in welchen sich die einzelnen Spiel-Szenen konsistent integrieren lassen, sowie der allgemeine Story-Verlauf. Sodann müssen die Szenen entworfen werden und die Interaktion auf und zwischen denselben. Es müssen auch Einflüsse durch globale Ansichten einbezogen werden; in diesem Fall wird ein Inventar angeboten werden, dessen Einträge je nach Szenen-Kontext benutzt werden können, um im Spiel voranzukommen, die aber bei anderen Szenen keinen Effekt haben sollen. Wenn diese Vorarbeit geleistet ist, empfiehlt es sich, die verschiedenen Entscheidungsvarianten nochmals durchzugehen und unvorhergesehene Kombinationen ausfindig zu machen. Die Spielwelt ist schnell umrissen:
+          </p>
+          <img src="text_browsergames_mit_php_1.png" width="417px" height="332px" alt="Schematische Darstellung der Szenen der Spielwelt." title="Szenen der Spielwelt" />
+          <p>
+            Die freie Bewegung zwischen den Szenen ist jederzeit ohne Einschränkungen gegeben, mit Ausnahme der Szene &bdquo;Sieg&ldquo;, die nur via Interaktion mit der Szene &bdquo;Ruine&ldquo; erreicht werden kann, wohin es auch nur eine Lösungsmöglichkeit gibt. &bdquo;Startkreuzung&ldquo; bildet den Einprungspunkt beim erstmaligen Betreten der Welt, zu jedem späteren Zeitpunkt wird die zuletzt besuchte Szene geladen. Auf diese Weise ist &bdquo;Sieg&ldquo; automatisch die Endstation, da kein Weg zurück führt. Der &bdquo;Laden&ldquo; ist die Anlaufstelle, um Gegenstände in das Inventar aufzunehmen (einzukaufen). Bei den angebotenen belegten Brötchen teilen sich alle Spieler die (noch) verfügbare Menge für diesen Tag. Jeder Spieler kann alle 3 Brötchen an einem Tag kaufen, und andere Spieler haben dann keine Möglichkeit mehr, ein weiteres Brötchen an diesem Tag zu erwerben. Die jeweils übrig bleibenden Brötchen stehen aber natürlich weiterhin zum Verkauf. Mit dem nächsten Tag wird die Maximalanzahl von 3 Brötchen wieder aufgefüllt. Zwischen den Szenen &bdquo;Sägewerk&ldquo;, &bdquo;Mann (Säge)&ldquo; und &bdquo;Mann (Raum)&ldquo; ist ein komplexeres Zusammenspiel geplant:
+          </p>
+          <ol>
+            <li>Szene &bdquo;Mann (Säge)&ldquo; betreten, um die Information zu erhalten, dass eine Ablösung ansteht.</li>
+            <li>Anschließend Szene &bdquo;Mann (Raum)&ldquo; betreten, womit die beiden Männer ihren Platz tauschen, die Szenen bleiben dabei aber gleich.</li>
+            <li>Anschließend Szene &bdquo;Mann (Raum)&ldquo; erneut betreten, wo nun der Mann, welcher vorher an der Säge stand, von nun an ein Brötchen aus dem Inventar entgegennimmt.</li>
+            <li>Sobald ein Brötchen aus dem Inventar gegeben wurde, wird beim Verlassen der Szene ein Schlüssel ins Inventar übernommen.</li>
+          </ol>
+          <p>
+            Der Schlüssel aus dem Inventar kann auf der Szene &bdquo;Ruine&ldquo; benutzt werden, was eine Option freischaltet, um die weitere Szene &bdquo;Sieg&ldquo; zugänglich zu machen.
+          </p>
+        </div>
+        <div>
+          <h3>Technisches Konzept</h3>
+          <p>
+            Der Quelltext wird in drei Bereiche eingeteilt: funktionale/globale Seiten, Bibliotheken und Szenen. Das GUI besteht einerseits aus <b>$/ftp/game.php</b>, wo entsprechend des aktuellen Standorts des Spielers laut Datenbank die passende Szene geladen werden soll, und andererseits aus einer Inventarseite <b>$/ftp/inventory.php</b>. <b>$/ftp/index.php</b> und <b>$/ftp/logout.php</b> sollen die Anmeldung bzw. Abmeldung übernehmen. Unterstützend kommt <b>$/ftp/database.inc.php</b> hinzu, was beim Einbinden die Verbindung zur Datenbank herstellt. In <b>$/ftp/gamelib.inc.php</b> werden sowohl Funktionen zur Manipulation der Datenbank als auch zur Erzeugung von HTML-Bestandteilen zusammengefasst, während in <b>$/ftp/inventorylib.inc.php</b> Hilfsmittel zur Verwaltung des Inventars bereitgestellt werden. Die Datenbank-Tabellen sind ähnlich zweigeteilt &ndash; indem die Tabelle <code>user</code> die Benutzerdaten aufnimmt, die Tabellen <code>variables_global</code>, <code>variables_user</code> und <code>inventory</code> jedoch ein generisches Konzept verfolgen. Einträge in <code>variables_global</code> gelten für die Spielwelt insgesamt, <code>variables_user</code> ist spezifisch für einen Benutzer und <code>inventory</code> enthält ebenso pro Benutzer die dazugehörigen Inventar-Einträge.<br />
+            Bei der Eingabe des Benutzernamens wird dieser neu angelegt, sofern noch nicht vorhanden. Wenn der Benutzername schon einmal zuvor verwendet wurde, soll zusätzlich das hinterlegte Passwort überprüft werden. Automatisch soll der Spieler an der zuletzt in die Datenbank geschriebene Szene fortsetzen, bei der erstmaligen Anmeldung ist dies per Vorgabe die &bdquo;Startkreuzung&ldquo;.
+          </p>
+        </div>
+        <div>
+          <h3>Voraussetzungen</h3>
+          <p>
+            Die Beteiligung von PHP und einer Datenbank bringt es mit sich, dass das Browsergame auf einem Server betrieben werden muss. Weil u.a. Klassen eingesetzt werden, muss der Server mindestens PHP5 aufweisen. Die Programmierung und Entwicklung sollte dabei immer auf einer lokal installierten Server-Software auf dem eigenen Rechner durchgeführt werden. Ein fertiges, getestetes Ergebnis wird dann später auf einen Webserver hochgeladen, um über das Internet potentiellen Spielern zugänglich gemacht zu werden. Kenntnisse hinsichtlich Installation und Betrieb von Server-Software lokal und online sind nicht Gegenstand dieses Tutorials und werden vorausgesetzt. Es sollte berücksichtigt werden, dass zwar das lokale Experimentieren mit Browsergame-Code für jedermann vergleichsweise gefahrlos möglich ist, gleichzeitig aber im Web-Umfeld durch fehlerhaften Code oder falsche Konfiguration erhebliche Sicherheitslücken entstehen können, die im schlimmsten Fall sogar den gesamten Server lahm legen oder etwa zu strafrechtlichen Konsequenzen führen könnten. Deshalb besteht eine weitere wichtige Voraussetzung darin, sämtliche Versuche zu unterlassen, bei welchen man nicht genau weiß, was man eigentlich tut &ndash; entsprechendes Wissen ist vorher anzueignen, bevor dieses Tutorial Anwendung finden kann. Darüber hinaus ist der Code des Tutorials keineswegs vor Sicherheitslücken gefeit, sodass er vor dem Einsatz in einer Produktiv-Umgebung überprüft werden muss. Festgestellte Fehler sollen bitte gemeldet werden.
+          </p>
+          <p>
+            Der Tutorial-Code geht davon aus, dass der Inhalt der Datei <b>$/src/database.sql</b> (oder ein Äquivalent) auf dem Datenbank-System des Servers ausgeführt worden ist. Datenbank-Name, Datenbank-Benutzer, Host und Passwort müssen dabei angepasst und in <b>$/ftp/database.inc.php</b> vermerkt werden.
+          </p>
+        </div>
+        <div>
+          <h3>Programmierung</h3>
+          <p>
+            In <b>$/ftp/index.php</b> wird zunächst geprüft, ob ein Benutzer mit dem eingegebenen Namen bereis existiert. Wenn dies nicht der Fall ist, wird er mit <code>insertNewUser()</code> aus der <b>$/ftp/gamelib.inc.php</b> neu angelegt. Dort wird u.a. das Attribut <code>user.scene</code> mit der Szene <tt>"start"</tt> vorbelegt. Ferner wird die Tabelle <code>variables_user</code> mit allen Einträgen und allen Startwerten für diesen neu angelegten Benutzer initialisiert. Die eindeutige Identifikation eines zutreffenden Datensatzes geschieht mittels der Kombination aus <code>variables_user.user_id</code> und <code>variables_user.variable</code>, letzteres ist ein String-Name zur besseren Leserlichkeit, sollte aber aus Performance-Gründen üblicherweise eher mit IDs gelöst sein. Bei der Initialisierung von <code>inventory</code> finden ebensolche IDs Anwendung, wozu <b>$/ftp/inventorylib.inc.php</b> leserliche Konstantennamen für deren numerischen Wert bereitstellt. Für den Fall, dass zu einem späteren Zeitpunkt die Spieler-Stati oder die Gegenstände im Inventar erweitert werden sollen, muss der Initialisierungs-Code der <code>insertNewUser()</code> ebenfalls angepasst werden. Dieser Umstand könnte in der Dokumentation festgehalten oder per Kommentar über der Konstanten-Liste (zu finden am Beginn der <b>$/ftp/inventorylib.inc.php</b>) vermerkt werden. Eine andere Möglichkeit bestünde darin, die Inventar-Initialisierung als Funktion nach <b>$/ftp/inventorylib.inc.php</b> auszulagern. Solche Entscheidungen hängen maßgeblich davon ab, welchen Komplexitätsgrad das Spiel erreichen wird und ob derartige Design-Optimierungen erforderlich werden. Wenn es den Benutzer schon gibt, findet eine Passwort-Überprüfung statt. Nach Neuanlage des Benutzers oder erfolgreicher Passwort-Überprüfung wird dann nur noch die Session gestartet, was von nun an den Zugang zu <b>$/ftp/game.php</b> gewährt.
+          </p>
+          <p>
+            <b>$/ftp/game.php</b> ist die Hauptseite des Spiels mit der einzigen Aufgabe, die Szenen zu laden. Die Information, welche Szene momentan anzuwenden ist, kommt in aller Regel aus <code>$_SESSION['scene']</code>. Bei jedem Szenenwechsel wird <code>$_SESSION['scene']</code> neu gesetzt und der Szenen-Name gleichzeitig in die Datenbank gespeichert (Feld <code>user.scene</code>). Wenn nach der (erstmaligen oder wiederholten) Anmeldung <code>$_SESSION['scene']</code> noch nicht gesetzt ist, wird in der Datenbank nachgeschaut. Im Notfall wird die Szene auf <tt>"start"</tt> gesetzt, wenn der Szenen-Name weder aus <code>$_SESSION</code> noch aus der Datenbank ermittelt werden konnte. Der Szenen-Mechanismus funktioniert dann &ndash; sobald der Szenen-Name bekannt ist &ndash; so, dass zunächst geprüft wird, ob im Ordner <b>$/ftp/szenen</b> eine <b>*.inc.php</b>-Datei mit dem Szenen-Namen vorhanden ist. Wenn ja, wird diese direkt mit <code>require_once()</code> eingebunden und gelangt dadurch zur Ausführung. Im einfachsten Fall wird in der geladenen Szene ein Formular ausgegeben, danach passiert in <b>$/ftp/game.php</b> nichts weiter. Weil allerdings die Formulare der Szenen einen Szenenwechsel via HTTP-POST wiederum an <b>$/ftp/game.php</b> schicken, wird <b>$/ftp/game.php</b> erneut mit der noch unveränderten Szenen-Information geladen und dort dann <code>$_POST</code> ausgewertet. Wenn infolge der Werte in <code>$_POST</code> ein Szenenwechsel durchgeführt wurde (im Sinne der Datenbank und des neuen Wertes in <code>$_SESSION['scene']</code>), stimmt die ursprüngliche Szene in <code>$szene</code> natürlich nicht mehr mit der neuen <code>$_SESSION['scene']</code> überein, was zum Laden der neuen Szene, ebenfalls mittels <code>require_once()</code>, führt.
+          </p>
+          <p>
+            Damit dieses Verfahren reibungslos funktioniert, gibt es bestimmte Regeln, welche Aktionen in welchem Teil der Szenen-Dateien gestattet sind und welche zu Problemen führen würden. Ein einfaches Beispiel ist die Szene <tt>"start"</tt>, die in der Datei <b>$/ftp/szenen/start.inc.php</b> zu finden ist. Hier werden lediglich drei Szenenwechsel-Möglichkeiten angeboten, die beim ersten Aufruf unter Zuhilfenahme der <code>generateHTMLChooseForm()</code>-Funktion der <b>$/ftp/gamelib.inc.php</b> als HTML-Formular angeboten werden. <code>generateHTMLChooseForm()</code> erwartet einen Parameter <code>$name</code>, welcher als Array-Index im <code>$_POST</code> verwendet wird. Der zweite Parameter <code>$options</code> erwartet ein assoziatives Array, dessen Keys die Werte für das <code>$_POST</code>-Array repräsentieren. Die Array-Elemente von <code>$options</code> stellen die Beschriftung für das Formular-Element dar. Wurde das Formular an <b>$/ftp/game.php</b> abgeschickt, wird dieselbe Szene nochmals geladen, jetzt aber findet die Auswertung von <code>$_POST</code> statt. Alle drei Möglichkeiten führen durch den Aufruf von <code>setScene()</code> der <b>$/ftp/gamelib.inc.php</b> zu einem Szenenwechsel, was <b>$/ftp/game.php</b> nach Beendigung von <b>$/ftp/szenen/start.inc.php</b> feststellen wird. Der Fall <tt>case "rechts"</tt> gibt zusätzlich eine Wechsel-Nachricht aus, die überhalb der Szenenbeschreibung der Zielszene zu lesen sein wird. Diese Nachrichten sind nur einmalig sichtbar, denn wenn bei Abmeldung und Anmeldung dieselbe, neue Szene betreten wird, wird der Wechselcode nicht noch einmal ausgeführt und die Meldung unterbleibt. Ganz wichtig ist das
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/szenen/start.inc.php</b>
+            <pre><code>
+              unset($_POST['richtung']);
+            </code></pre>
+          </div>
+          <p>
+            damit die alten Formular-Daten nicht auch noch für die neue Szene bestehen bleiben. Ungünstigerweise könnte dort <code>$_POST['richtung']</code> ebenfalls für das eigene Formular ausgewertet werden, ein derartiger Effekt ist also nicht erwünscht.
+          </p>
+          <p>
+            Über diese einfache Variante hinaus sind freilich auch komplexere Interaktionen wie z.B. in <b>$/ftp/szenen/dorf_laden.inc.php</b> interessant. Dort wird zu Beginn für jeden Script-Durchlauf eine Variable <code>$broetchen['dorf_laden_broetchen_anzahl']</code> bereitgestellt, die sich aus dem Aufruf von <code>getGlobalVariables()</code> der <b>$/ftp/gamelib.inc.php</b> speist. Besagte Funktion (und analog dazu <code>getUserVariables()</code> mit dem Unterschied des <code>$userID</code>-Parameters) holt alle Werte aus <code>variables_global.value</code> laut der im <code>$names</code>-Parameter spezifizierten Namen für <code>variables_global.variable</code>. Zu diesem Zweck setzt <code>getGlobalVariables()</code> einen SQL-Query-String dynamisch zusammen und führt etliche Prüfungen durch, ob das Ergebnis vollständig ist. Da diese Funktion nur durch den Programmierer explizit aufgerufen wird, muss dieser Sorge dafür tragen, dass alle Variablen in der Tabelle auch tatsächlich vorhanden sind. Sollte diese Anforderung einmal nicht erfüllt sein, gibt die Funktion Fehlermeldungen aus, die direkt im HTML-Code landen. Sobald alle Aufrufe getestet wurden, können die Prüfungen aus Performance-Gründen bei Bedarf ausgebaut werden. Zurück in <b>$/ftp/szenen/dorf_laden.inc.php</b> wird die &bdquo;globale Variable&ldquo; <tt>"dorf_laden_broetchen_anzahl"</tt> mithilfe von <code>setGlobalVariables()</code> auf <code>3</code> gesetzt, wenn der abgefragte Timer <tt>"dorf_laden_broetchen_timer"</tt> auf einem vergangenen Tag steht. Folglich wird <tt>"dorf_laden_broetchen_anzahl"</tt> jeden Tag erneuert. <code>setGlobalVariables()</code> (und analog dazu <code>setUserVariables()</code> mit dem Unterschied des <code>$userID</code>-Parameters) führt für jedes Element des <code>$variables</code>-Parameters (ein assoziatives Array mit Variablen-Name für <code>variables_global.variable</code> als Key samt Wert) einen SQL-<code>UPDATE</code>-Befehl in einer SQL-Transaktion durch. Abhängig von der nun in <code>$broetchen['dorf_laden_broetchen_anzahl']</code> angegebenen Anzahl wird entweder durch <code>generateHTMLLadenForm()</code> (eine lokale Funktion, die in <b>$/ftp/szenen/dorf_laden.inc.php</b> definiert ist) oder durch <code>generateHTMLChooseForm()</code> ein abweichendes Interaktions-Formular bereitgestellt. Beim Absenden des Formulars wird auf beide Formular-Möglichkeiten im
+          </p>
+          <div>
+            Auszug aus <b>$/ftp/szenen/dorf_laden.inc.php</b>
+            <pre><code>
+              switch($_POST['wahl'])
+              {
+              case "broetchen":
+                  // Nur möglich mit generateHTMLLadenForm()-Formular.
+                  break;
+
+              case "verlassen":
+                  // Nur möglich mit generateHTMLChoose()-Formular.
+                  break;
+
+              default:
+                  break;
+              }
+            </code></pre>
+          </div>
+          <p>
+            unterschiedlich reagiert. Ein Trick ist hierbei, in beiden Formularen als Formularfeld-Name <tt>"wahl"</tt> einzusetzen, man könnte aber genauso mit <code>if...else if</code> zwei Eingabefeld-Alternativen voneinander unterscheiden. Der Fall <code>case "broetchen"</code> verdient eine genauere Betrachtung, denn in diesem Ablauf-Zweig nimmt die Szene weitreichenden Einfluss auf das Spielsystem. Namentlich wird <b>$/ftp/inventorylib.inc.php</b> eingebunden und die darin enthaltene Klasse <code>Inventory</code> eingesetzt. Ein Objekt der Klasse repräsentiert das komplette Inventar eines Benutzers, welches im Konstruktor (<code>Inventory::__construct()</code>) in den Member <code>$this->inventory</code> via Datenbank-Abfrage eingelesen wird. Die Tabelle <code>inventory</code> sollte also während der gesamten Lebenszeit des <code>Inventory</code>-Objekts nicht verändert werden, da das Objekt nicht aktualisiert wird. In der Regel sollte dies aber kein Problem darstellen, da eine Szene ohnehin exklusiven Zugang zum aktuellen Benutzer hat und keine anderweitigen Datenbank-Manipulationen vorgesehen werden sollten. Mit der Methode <code>Inventory::GetItem()</code> kann die Anzahl eines Gegenstandes abgefragt werden, <code>Inventory::SetItem()</code> manipuliert selbige. <code>Inventory::GetItem()</code> liefert immer den aktuellen Stand der Anzahl inklusive aller vorangegangener <code>Inventory::SetItem()</code>-Aufrufe, aber womöglich abweichend zum derzeitigen Stand der Datenbank. Wenn das Objekt zerstört wird, schreibt der Destruktor (<code>Inventory::__destruct()</code>) die neuen Gegenstands-Mengen in die Datenbank, aber aus Optimierungs-Gründen nur jene, die durch <code>Inventory::SetItem()</code> verändert wurden. Mit der Methode <code>Inventory::DiscardModifications()</code> kann verhindert werden, dass der Destruktor die vorangegangenen <code>Inventory::SetItem()</code>-Modifikationen in die Datenbank schreibt. Aus diesen Eigenheiten ergibt sich die Art und Weise der Verwendung der <code>Inventory</code>-Objekte, nämlich eine lokal eingeschränkte, exklusive Nutzung &ndash; die absolut ausreicht, um für die Szenen eine angenehme Schnittstelle zur Inventarverwaltung anzubieten. Zu beachten ist dabei lediglich, dass sämtliche Logik-Prüfungen vom aufrufenden Code durchgeführt werden müssen, denn die <code>Inventory</code>-Klasse lässt ohne weiteres negative Werte zu und führt auch keine Berechnungen aus. <b>$/ftp/szenen/dorf_laden.inc.php</b> macht von der Inventar-Verwaltung Gebrauch, indem von der &bdquo;globalen Variable&ldquo; <tt>"dorf_laden_broetchen_anzahl"</tt> (Anzahl der im Laden angebotenen Brötchen) die ausgewählte Anzahl abgezogen und ins Inventar gutgeschrieben, gleichzeitig aber auch die Bezahlung in Form des Inventar-Postens <code>INVENTORY_TALER</code> abgezogen wird. In etwa läuft die Transaktion wie folgt ab:
+          </p>
+          <ol>
+            <li>Wenn die gewünschte Anzahl Brötchen höher ist als die Anzahl der verfügbaren, wird höchstens die verfügbare Anzahl verkauft.</li>
+            <li>Wenn die Anzahl der gewünschten Brötchen mal der Preis pro Brötchen größer ist als die Anzahl der Taler im Inventar des Spielers, findet keine Transaktion statt.</li>
+            <li>Anderenfalls wird die bereits bestehende Anzahl Brötchen im Inventar plus die Anzahl der gewünschten Brötchen ins Inventar gutgeschrieben.</li>
+            <li>Ferner wird die Anzahl der Taler im Inventar um den Preis mal der Anzahl der gewünschten Brötchen verringert.</li>
+            <li>Die Anzahl der verfügbaren Brötchen im Laden wird um die Anzahl der gewünschten (und erfolgreich verkauften) Brötchen verringert.</li>
+          </ol>
+          <p>
+            Der übrige Code besteht darüber hinaus darin, dass informationelle Ausgaben und die Formulare zur weiteren Navigation erzeugt werden. Wenn alle Brötchen, die für diesen Tag zur Verfügung standen, verkauft worden sind, wird das Angebots-Formular weder für den aktuellen Spieler noch für andere Spieler angezeigt, wenn nach dem Kauf des Spielers aber weiterhin Brötchen übrig sind, kann er direkt im Anschluss erneut einkaufen.
+          </p>
+          <p>
+            Um die Benutzung des Inventars zu ermöglichen, ist in <b>$/ftp/game.php</b> zu jeder Spielansicht ein Link nach <b>$/ftp/inventory.php</b> angebracht. Wenn die Seite über das Formular oder über den &bdquo;Verlassen&ldquo;-Link nach <b>$/ftp/game.php</b> verlassen wird, enthält <code>$_SESSION['scene']</code> weiterhin die momentan anzuzeigende Szene, sodass der Aufruf des Inventars keine Auswirkung auf die Position des Spielers hat. Die Oberfläche wird mithilfe der <code>Inventory</code>-Klasse aus rein informativen Einträgen und aus einem Formular aufgebaut. Letzteres dient der Benutzung einzelner Gegenstände auf der aktuellen Szene. Da über HTTP-POST die Auswahl an <b>$/ftp/game.php</b> unter dem Namen <tt>inventory_item</tt> geschickt wird, können Szenen-Seiten auf <code>$_POST['inventory_item']</code> reagieren und entsprechende Aktionen auslösen. Die Szene <tt>"ruine"</tt> unter <b>$/ftp/szenen/ruine.inc.php</b> macht genau das. <code>$_POST['inventory_item']</code> wird unabhängig von <code>$_POST['wahl']</code> ausgewertet, dennoch hat die Inventar-Berücksichtigung Auswirkungen auf die spätere Szenengestaltung. Die &bdquo;Benutzervariable&ldquo; <tt>"ruine_schloss_geoeffnet"</tt> dient dazu, den bisherigen Fortschritts-Status zu merken. Das Gitter kann nur dann geöffnet werden, wenn es noch verschlossen ist, was durch den Wert <code>0</code> für <code>$statusSchloss</code> signalisiert wird. Sofern bei verschlossenem Gitter der Schlüssel aus dem Inventar benutzt wird, prüft <b>$/ftp/szenen/ruine.inc.php</b> nochmal über das Inventar, ob der Spieler tatsächlich den Schlüssel hat oder ob es sich um einen Betrugsversuch handelt. Wenn nicht, wird der Status geändert zu <code>1</code> für &bdquo;geöffnet&ldquo; mit darauffolgender Hinweismeldung. Der Wert <code>1</code> in <code>$statusSchloss</code> sorgt für einen neuen Auswahlpunkt im Formular, der vorher nicht zur Verfügung stand.
+          </p>
+          <p>
+            Das zweifellos komplexeste Zusammenspiel von Szenen findet zwischen <tt>"saegewerk_innen_mann_saege"</tt> (<b>$/ftp/szenen/saegewerk_innen_mann_saege.inc.php</b>) und <tt>"saegewerk_innen_mann_begutachter"</tt> (<b>$/ftp/szenen/saegewerk_innen_mann_begutachter.inc.php</b>) statt. Nicht nur, dass die Interaktion über Szenengrenzen hinweg stattfindet, sondern darüber hinaus ändern die Szenen auch noch ihre inhaltliche Bedeutung. Zur Veranschaulichung:
+          </p>
+          <table border="1">
+            <tr>
+              <th>Benutzervariable <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt></th>
+              <th>Szene <tt>"saegewerk_innen_mann_begutachter"</tt></th>
+              <th>Szene <tt>"saegewerk_innen_mann_saege"</tt></th>
+            </tr>
+            <tr>
+              <td nowrap="1"><code>0</code></td>
+              <td nowrap="1">&ndash;</td>
+              <td nowrap="1"><tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> = <code>1</code></td>
+            </tr>
+            <tr>
+              <td nowrap="1"><code>1</code></td>
+              <td nowrap="1"><tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> = <code>2</code></td>
+              <td nowrap="1">&ndash;</td>
+            </tr>
+            <tr>
+              <td nowrap="1"><code>2</code></td>
+              <td nowrap="1"><code>INVENTORY_BROETCHEN - 1</code>, <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> = <code>3</code></td>
+              <td nowrap="1">&ndash;</td>
+            </tr>
+            <tr>
+              <td nowrap="1"><code>3</code></td>
+              <td nowrap="1"><code>INVENTORY_SCHLUESSEL + 1</code>, <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> = <code>4</code></td>
+              <td nowrap="1">&ndash;</td>
+            </tr>
+            <tr>
+              <td nowrap="1"><code>4</code></td>
+              <td nowrap="1">&ndash;</td>
+              <td nowrap="1">&ndash;</td>
+            </tr>
+          </table>
+          <p>
+            In <b>$/ftp/szenen/saegewerk_innen_mann_saege.inc.php</b> wird die &bdquo;Benutzervariable&ldquo; <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> (siehe Tabelle <code>variables_user</code>) abgefragt und in <code>$statusAbloesung</code> bereitgestellt. Bei nicht abgesendetem Formular (<code>$_POST['wahl']</code> nicht gesetzt) bestimmt <code>$statusAbloesung</code>, welcher Szenentext ausgegeben werden muss. Es gilt zu bedenken, dass dieser Teil niemals einen Szenenwechsel veranlassen darf; ebenso ist der Zugriff auf das Inventar, das Lesen oder Schreiben von globalen oder benutzerspezifischen Variablen hier nicht (mehr) gestattet. Alle diese Operationen sollten möglichst vorher im Code darüber erledigt worden sein &ndash; er Block bei nicht gesetztem <code>$_POST</code>-Array dient nämlich allein der Generierung von Anzeige-Code, potentiell auf Basis von vorher ermittelten Werten. Bei abgesendetem Formular wird, wenn <code>"saegewerk_innen_mann_saege_konversationsstatus"</code> bisher <code>0</code> war, nach <code>1</code> versetzt, um dann auf der Szene <tt>"saegewerk_innen_mann_begutachter"</tt> weitere Berücksichtigung zu finden. <b>$/ftp/szenen/saegewerk_innen_mann_begutachter.inc.php</b> liest analog zunächst die &bdquo;Benutzervariable&ldquo; <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> aus. Darauf folgt die Behandlung von Inventar-Ereignissen, die nur beim Geben des Brötchens an den von der Säge abgelösten Mann (im Code der Wert <code>2</code> für <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt>) zur Ausführung gelangen darf. Wenn mittels <code>$_POST['inventory_idem']</code> vom Inventar signalisiert wird, dass das Brötchen benutzt werden soll, kann diese Information auch durch einen Betrugsversuch zustandekommen, weswegen nochmal zur Sicherheit das Inventar nach der Anzahl der verfügbaren Brötchen gefragt wird. Im Normalfall wird dann das Brötchen aus dem Inventar abgezogen, was eine direkte Veränderung von <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> vor Abarbeitung der späteren Ausgabe-Anweisungen zur Folge hat. Nach Absendung des Formulars muss die Szene je nach <code>$statusAbloesung</code> unterschiedliche Operationen ausführen: der <code>case "1"</code> schaltet gerade mal <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt> um, der scheinbar fehlende <code>case "2"</code> wurde ganz oben in Kombination mit dem Inventar abgehandelt und bei <code>case "3"</code> beschränkt sich der Code auf einen einfachen Inventar-Transfer samt dem Vermerk des letzten Status für <tt>"saegewerk_innen_mann_saege_konversationsstatus"</tt>.
+          </p>
+        </div>
+        <div>
+          <h3>Zusammenfassung und Ausblick</h3>
+          <p>
+            Schnell wird deutlich, dass die Hauptlast bei dieser Technologie auf dem Design des Textes und der Interaktionen liegt, namentlich im Entwurf der Szenen. Obwohl weitere globale Elemente um den großen Stapel an Szenen-Scripts herum angeordnet werden könnten, so ist doch deren Einfluss allein schon von der Code-Architektur her eingeschränkt. Eine Aufweichung des Szenen-Konzepts würde beispielsweise recht schnell zur Technologie der <a href="tabellen_browsergames_mit_php.html">Tabellen-Browsergames</a> führen; die reinen Text-Browsergames wählen diesen Weg bewusst nicht und legen den Schwerpunkt mehr auf die Story. Ungewöhnlicherweise werden dennoch HTML-Formulare eingesetzt, jedoch können zumindest manche Teile der Oberfläche auch mittels Textlinks realisiert werden, um keinen &bdquo;Bruch im Medium&ldquo; hervorzurufen. Die Szenen selbst sind nicht generisch, was einen höheren Aufwand als bei einer datengesteuerten Textspiel-Engine bedeutet, was aber auch einen höheren Grad der Flexibilität und eine geringere Lernkurve zur Folge hat.
+          </p>
+        </div>
+        <div>
+          <h3>Fazit</h3>
+          <p>
+            Zugegeben: Augenscheinlich handelt es sich um eine primitive Technologie, die sich nur wenig überhalb von schlichtem HTML bewegt. Dennoch bieten Text-Browsergames mit PHP eine Chance für Projekte, die eine weitläufige und abwechslungsreiche Geschichte zu erzählen haben. Ein weiterer Vorteil liegt darin begründet, dass keine andere klassische Disziplin benötigt wird als nur die des Programmierers, optional mögen Story-Designer hinzukommen. Wenngleich der Code auch ob seiner gegenseitigen Abhängigkeiten nicht gerade eine leichte Wartbarkeit aufweisen dürfte, sind Ergebnisse schnell möglich und können auch laufend erweitert und verändert werden, da die grundlegende Spielmechanik nicht in einem großen Kern besteht, sondern aus vielen separaten Szenen. Insgesamt fehlt es also nicht an technischem Können, sondern vielmehr an einer zündenden Idee, um Interessierte auf diese recht ungewohnte Art zu spielen aufmerksam zu machen.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div>
+        <hr />
+        /<a href="../../index.html">skreutzer.de</a>/<a href="../index.html">browsergames</a>/<a href="index.html">technologien</a>/: Tutorial &bdquo;Text-Browsergames mit PHP&ldquo;
+      </div>
+
+
+  </body>
+
+
+</html>
