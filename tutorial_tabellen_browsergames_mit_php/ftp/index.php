@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -47,7 +47,7 @@ if (isset($_POST['name']) !== true ||
          "        </form>\n".
          "\n".
          "        <pre>\n".
-         "Tutorial \"Tabellen-Browsergames mit PHP\" (C) 2011-2012  Stephan Kreutzer\n".
+         "Tutorial \"Tabellen-Browsergames mit PHP\" (C) 2011-2017  Stephan Kreutzer\n".
          "\n".
          "Tutorial \"Tabellen-Browsergames mit PHP\" is free software: you can redistribute it and/or modify\n".
          "it under the terms of the GNU Affero General Public License version 3 only,\n".
@@ -72,7 +72,7 @@ else
     // werden, bevor sie in ein SQL-Query eingefügt werden dürfen.
     // Es könnten unerlaubte Zeichen enthalten sein mit dem Ziel,
     // die Datenbank zu manipulieren.
-    $name = mysql_real_escape_string($_POST['name']);
+    $name = mysqli_real_escape_string($mysql_connection, $_POST['name']);
 
 
     $user = false;
@@ -80,17 +80,17 @@ else
     if ($name != false &&
         $mysql_connection != false)
     {
-        $user = mysql_query("SELECT `id`,\n".
-                            "    `salt`,\n".
-                            "    `password`\n".
-                            "FROM `user`\n".
-                            "WHERE `name` LIKE '".$name."'",
-                            $mysql_connection);
+        $user = mysqli_query($mysql_connection,
+                             "SELECT `id`,\n".
+                             "    `salt`,\n".
+                             "    `password`\n".
+                             "FROM `user`\n".
+                             "WHERE `name` LIKE '".$name."'");
     }
 
     if ($user != false)
     {
-        if (mysql_num_rows($user) == 0)
+        if (mysqli_num_rows($user) == 0)
         {
             // Den Benutzer gibt es noch nicht, also anlegen.
 
@@ -112,8 +112,8 @@ else
             // Den Benutzer gibt es bereits, er will sich
             // wiederholt anmelden.
 
-            $result = mysql_fetch_assoc($user);
-            mysql_free_result($user);
+            $result = mysqli_fetch_assoc($user);
+            mysqli_free_result($user);
             $user = $result;
 
             if ($user['password'] === hash('sha512', $user['salt'].$_POST['passwort']))

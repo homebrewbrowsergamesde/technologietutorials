@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -61,21 +61,21 @@ $ressourcen = false;
 
 if ($mysql_connection != false)
 {
-    $ressourcen = mysql_query("SELECT `food`,".
-                              "    `wood`,\n".
-                              "    `stone`,\n".
-                              "    `coal`,\n".
-                              "    `iron`,\n".
-                              "    `gold`\n".
-                              "FROM `user_resource`\n".
-                              "WHERE `user_id`=".$_SESSION['user_id']."\n",
-                              $mysql_connection);
+    $ressourcen = mysqli_query($mysql_connection,
+                               "SELECT `food`,".
+                               "    `wood`,\n".
+                               "    `stone`,\n".
+                               "    `coal`,\n".
+                               "    `iron`,\n".
+                               "    `gold`\n".
+                               "FROM `user_resource`\n".
+                               "WHERE `user_id`=".$_SESSION['user_id']."\n");
 }
 
 if ($ressourcen != false)
 {
-    $result = mysql_fetch_assoc($ressourcen);
-    mysql_free_result($ressourcen);
+    $result = mysqli_fetch_assoc($ressourcen);
+    mysqli_free_result($ressourcen);
     $ressourcen = $result;
 }
 
@@ -83,96 +83,90 @@ $map = false;
 
 if ($mysql_connection != false)
 {
-    $map = mysql_query("SELECT `fields_grass`,".
-                       "    `fields_wood`,\n".
-                       "    `fields_stone`,\n".
-                       "    `fields_coal`,\n".
-                       "    `fields_iron`,\n".
-                       "    `fields_gold`\n".
-                       "FROM `user_map`\n".
-                       "WHERE `user_id`=".$_SESSION['user_id']."\n",
-                       $mysql_connection);
+    $map = mysqli_query($mysql_connection,
+                        "SELECT `fields_grass`,".
+                        "    `fields_wood`,\n".
+                        "    `fields_stone`,\n".
+                        "    `fields_coal`,\n".
+                        "    `fields_iron`,\n".
+                        "    `fields_gold`\n".
+                        "FROM `user_map`\n".
+                        "WHERE `user_id`=".$_SESSION['user_id']."\n");
 }
 
 if ($map != false)
 {
-    $result = mysql_fetch_assoc($map);
-    mysql_free_result($map);
+    $result = mysqli_fetch_assoc($map);
+    mysqli_free_result($map);
     $map = $result;
 }
 
-// TODO: Evtl. mit COUNT...
 $gebaeude = false;
 
 if ($mysql_connection != false)
 {
-    $gebaeude = mysql_query("SELECT `building`".
-                            "FROM `building`\n".
-                            "WHERE `user_id`=".$_SESSION['user_id'],
-                            $mysql_connection);
+    $gebaeude = mysqli_query($mysql_connection,
+                             "SELECT `building`,\n".
+                             "    count(1) AS amount\n".
+                             "FROM `building`\n".
+                             "WHERE `user_id`=".$_SESSION['user_id']."\n".
+                             "GROUP BY `building`");
 }
 
 if ($gebaeude != false)
 {
     $result = array();
 
-    while ($temp = mysql_fetch_assoc($gebaeude))
+    while ($temp = mysqli_fetch_assoc($gebaeude))
     {
-        $result[] = $temp;
+        $result[$temp['building']] = $temp['amount'];
     }
 
-    mysql_free_result($gebaeude);
+    mysqli_free_result($gebaeude);
     $gebaeude = $result;
 }
 
 $bauernhoefe = 0;
 $holzfaeller = 0;
 $steinbrueche = 0;
-$handelshaus = false;
+$handelshaus = isset($gebaeude[ENUM_GEBAEUDE_HANDELSHAUS]);
 
-if (is_array($gebaeude) === true)
+if (isset($gebaeude[ENUM_GEBAEUDE_BAUERNHOF]) === true)
 {
-    foreach ($gebaeude as $g)
-    {
-        switch ($g['building'])
-        {
-        case ENUM_GEBAEUDE_BAUERNHOF:
-            $bauernhoefe += 1;
-            break;
-        case ENUM_GEBAEUDE_HOLZFAELLER:
-            $holzfaeller += 1;
-            break;
-        case ENUM_GEBAEUDE_STEINBRUCH:
-            $steinbrueche += 1;
-            break;
-        case ENUM_GEBAEUDE_HANDELSHAUS:
-            $handelshaus = true;
-            break;
-        }
-    }
+    $bauernhoefe = (int)$gebaeude[ENUM_GEBAEUDE_BAUERNHOF];
+}
+
+if (isset($gebaeude[ENUM_GEBAEUDE_HOLZFAELLER]) === true)
+{
+    $holzfaeller = (int)$gebaeude[ENUM_GEBAEUDE_HOLZFAELLER];
+}
+
+if (isset($gebaeude[ENUM_GEBAEUDE_STEINBRUCH]) === true)
+{
+    $steinbrueche = (int)$gebaeude[ENUM_GEBAEUDE_STEINBRUCH];
 }
 
 $messages = false;
 
 if ($mysql_connection != false)
 {
-    $messages = mysql_query("SELECT `text`".
-                            "FROM `message`\n".
-                            "WHERE `user_id`=".$_SESSION['user_id']."\n".
-                            "ORDER BY `time` ASC",
-                            $mysql_connection);
+    $messages = mysqli_query($mysql_connection,
+                             "SELECT `text`".
+                             "FROM `message`\n".
+                             "WHERE `user_id`=".$_SESSION['user_id']."\n".
+                             "ORDER BY `time` ASC");
 }
 
 if ($messages != false)
 {
     $result = array();
 
-    while ($temp = mysql_fetch_assoc($messages))
+    while ($temp = mysqli_fetch_assoc($messages))
     {
         $result[] = $temp;
     }
 
-    mysql_free_result($messages);
+    mysqli_free_result($messages);
     $messages = $result;
 }
 
@@ -237,17 +231,10 @@ echo "            </td>\n".
      "            <td valign=\"top\">\n".
      "              <a href=\"bauen.php\">Bauen</a><br />\n";
 
-if (is_array($gebaeude) === true)
+if ($handelshaus === true)
 {
-    foreach ($gebaeude as $g)
-    {
-        if ($g['building'] == ENUM_GEBAEUDE_HANDELSHAUS)
-        {
-            echo "              <a href=\"senden.php\">Senden</a><br />\n".
-                 "              <a href=\"handeln.php\">Handeln</a><br />\n";
-            break;
-        }
-    }
+    echo "              <a href=\"senden.php\">Senden</a><br />\n".
+         "              <a href=\"handeln.php\">Handeln</a><br />\n";
 }
 
 echo "            </td>\n".

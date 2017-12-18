@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -58,16 +58,16 @@ require_once("database.inc.php");
 
 if ($mysql_connection != false)
 {
-    $gebaeude = mysql_query("SELECT `building`".
-                            "FROM `building`\n".
-                            "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
-                            "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'",
-                            $mysql_connection);
+    $gebaeude = mysqli_query($mysql_connection,
+                             "SELECT `building`".
+                             "FROM `building`\n".
+                             "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
+                             "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'");
 }
 
 if ($gebaeude != false)
 {
-    if (mysql_fetch_assoc($gebaeude) != true)
+    if (mysqli_fetch_assoc($gebaeude) != true)
     {
         // Hier versucht jemand unerlaubterweise, auf
         // die Seite zuzugreifen, obwohl er das Handelshaus
@@ -75,7 +75,7 @@ if ($gebaeude != false)
         exit();
     }
 
-    mysql_free_result($gebaeude);
+    mysqli_free_result($gebaeude);
 }
 
 

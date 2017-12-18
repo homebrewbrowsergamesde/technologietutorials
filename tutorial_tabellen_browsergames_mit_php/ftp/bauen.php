@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -66,21 +66,21 @@ $map = false;
 
 if ($mysql_connection != false)
 {
-    $map = mysql_query("SELECT `fields_grass`,".
-                       "    `fields_wood`,\n".
-                       "    `fields_stone`,\n".
-                       "    `fields_coal`,\n".
-                       "    `fields_iron`,\n".
-                       "    `fields_gold`\n".
-                       "FROM `user_map`\n".
-                       "WHERE `user_id`=".$_SESSION['user_id']."\n",
-                       $mysql_connection);
+    $map = mysqli_query($mysql_connection,
+                        "SELECT `fields_grass`,".
+                        "    `fields_wood`,\n".
+                        "    `fields_stone`,\n".
+                        "    `fields_coal`,\n".
+                        "    `fields_iron`,\n".
+                        "    `fields_gold`\n".
+                        "FROM `user_map`\n".
+                        "WHERE `user_id`=".$_SESSION['user_id']."\n");
 }
 
 if ($map != false)
 {
-    $result = mysql_fetch_assoc($map);
-    mysql_free_result($map);
+    $result = mysqli_fetch_assoc($map);
+    mysqli_free_result($map);
     $map = $result;
 }
 
@@ -89,23 +89,23 @@ $gebaeude = false;
 
 if ($mysql_connection != false)
 {
-    $gebaeude = mysql_query("SELECT `building`".
-                            "FROM `building`\n".
-                            "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
-                            "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'",
-                            $mysql_connection);
+    $gebaeude = mysqli_query($mysql_connection,
+                             "SELECT `building`".
+                             "FROM `building`\n".
+                             "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
+                             "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'");
 }
 
 if ($gebaeude != false)
 {
     $result = array();
 
-    while ($temp = mysql_fetch_assoc($gebaeude))
+    while ($temp = mysqli_fetch_assoc($gebaeude))
     {
         $result[] = $temp;
     }
 
-    mysql_free_result($gebaeude);
+    mysqli_free_result($gebaeude);
     $gebaeude = $result;
 }
 
@@ -113,23 +113,23 @@ $bauschlange = false;
 
 if ($mysql_connection != false)
 {
-    $bauschlange = mysql_query("SELECT `building`".
-                               "FROM `build_queue`\n".
-                               "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
-                               "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'",
-                               $mysql_connection);
+    $bauschlange = mysqli_query($mysql_connection,
+                                "SELECT `building`".
+                                "FROM `build_queue`\n".
+                                "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
+                                "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'");
 }
 
 if ($bauschlange!= false)
 {
     $result = array();
 
-    while ($temp = mysql_fetch_assoc($bauschlange))
+    while ($temp = mysqli_fetch_assoc($bauschlange))
     {
         $result[] = $temp;
     }
 
-    mysql_free_result($bauschlange);
+    mysqli_free_result($bauschlange);
     $bauschlange = $result;
 }
 

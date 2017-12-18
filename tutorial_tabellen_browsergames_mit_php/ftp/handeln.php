@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -58,16 +58,16 @@ require_once("database.inc.php");
 
 if ($mysql_connection != false)
 {
-    $gebaeude = mysql_query("SELECT `building`".
-                            "FROM `building`\n".
-                            "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
-                            "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'",
-                            $mysql_connection);
+    $gebaeude = mysqli_query($mysql_connection,
+                             "SELECT `building`".
+                             "FROM `building`\n".
+                             "WHERE `user_id`=".$_SESSION['user_id']." AND\n".
+                             "    `building`='".ENUM_GEBAEUDE_HANDELSHAUS."'");
 }
 
 if ($gebaeude != false)
 {
-    if (mysql_fetch_assoc($gebaeude) != true)
+    if (mysqli_fetch_assoc($gebaeude) != true)
     {
         // Hier versucht jemand unerlaubterweise, auf
         // die Seite zuzugreifen, obwohl er das Handelshaus
@@ -75,7 +75,7 @@ if ($gebaeude != false)
         exit();
     }
 
-    mysql_free_result($gebaeude);
+    mysqli_free_result($gebaeude);
 }
 
 
@@ -94,27 +94,27 @@ if ((isset($_POST['suche_menge']) !== true ||
 {
     if ($mysql_connection != false)
     {
-        $trades = mysql_query("SELECT `id`,\n".
-                              "    `give_amount`,\n".
-                              "    `give_type`,\n".
-                              "    `get_amount`,\n".
-                              "    `get_type`,\n".
-                              "    `user_id`\n".
-                              "FROM `trading`\n".
-                              "ORDER BY `time` DESC\n",
-                              $mysql_connection);
+        $trades = mysqli_query($mysql_connection,
+                               "SELECT `id`,\n".
+                               "    `give_amount`,\n".
+                               "    `give_type`,\n".
+                               "    `get_amount`,\n".
+                               "    `get_type`,\n".
+                               "    `user_id`\n".
+                               "FROM `trading`\n".
+                               "ORDER BY `time` DESC\n");
     }
 
     if ($trades != false)
     {
         $result = array();
 
-        while ($temp = mysql_fetch_assoc($trades))
+        while ($temp = mysqli_fetch_assoc($trades))
         {
             $result[] = $temp;
         }
 
-        mysql_free_result($trades);
+        mysqli_free_result($trades);
         $trades = $result;
     }
 

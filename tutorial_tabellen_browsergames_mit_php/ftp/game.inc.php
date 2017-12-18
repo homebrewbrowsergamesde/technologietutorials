@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -39,7 +39,7 @@ function insertNewUser($name, $passwort)
         return -1;
     }
 
-    if (mysql_query("BEGIN", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "BEGIN") !== true)
     {
         return -2;
     }
@@ -49,25 +49,25 @@ function insertNewUser($name, $passwort)
     // werden!
     $passwort = hash('sha512', $salz.$passwort);
 
-    if (mysql_query("INSERT INTO `user` (`id`,\n".
-                    "    `name`,\n".
-                    "    `salt`,\n".
-                    "    `password`)\n".
-                    "VALUES (NULL,\n".
-                    "    '".$name."',\n".
-                    "    '".$salz."',\n".
-                    "    '".$passwort."')\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "INSERT INTO `user` (`id`,\n".
+                     "    `name`,\n".
+                     "    `salt`,\n".
+                     "    `password`)\n".
+                     "VALUES (NULL,\n".
+                     "    '".$name."',\n".
+                     "    '".$salz."',\n".
+                     "    '".$passwort."')\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -3;
     }
 
-    $id = mysql_insert_id($mysql_connection);
+    $id = mysqli_insert_id($mysql_connection);
 
     if ($id == 0)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -4;
     }
 
@@ -88,52 +88,52 @@ function insertNewUser($name, $passwort)
     $verbleibende_felder -= $felder_eisen;
     $felder_gold = $verbleibende_felder;
 
-    if (mysql_query("INSERT INTO `user_map` (`user_id`,\n".
-                    "    `fields_grass`,\n".
-                    "    `fields_wood`,\n".
-                    "    `fields_stone`,\n".
-                    "    `fields_coal`,\n".
-                    "    `fields_iron`,\n".
-                    "    `fields_gold`)\n".
-                    "VALUES (".$id.",\n".
-                    "    ".$felder_gras.",\n".
-                    "    ".$felder_holz.",\n".
-                    "    ".$felder_stein.",\n".
-                    "    ".$felder_kohle.",\n".
-                    "    ".$felder_eisen.",\n".
-                    "    ".$felder_gold.")\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "INSERT INTO `user_map` (`user_id`,\n".
+                     "    `fields_grass`,\n".
+                     "    `fields_wood`,\n".
+                     "    `fields_stone`,\n".
+                     "    `fields_coal`,\n".
+                     "    `fields_iron`,\n".
+                     "    `fields_gold`)\n".
+                     "VALUES (".$id.",\n".
+                     "    ".$felder_gras.",\n".
+                     "    ".$felder_holz.",\n".
+                     "    ".$felder_stein.",\n".
+                     "    ".$felder_kohle.",\n".
+                     "    ".$felder_eisen.",\n".
+                     "    ".$felder_gold.")\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -5;
     }
 
-    if (mysql_query("INSERT INTO `user_resource` (`user_id`,\n".
-                    "    `food`,\n".
-                    "    `wood`,\n".
-                    "    `stone`,\n".
-                    "    `coal`,\n".
-                    "    `iron`,\n".
-                    "    `gold`)\n".
-                    "VALUES (".$id.",\n".
-                    "    10,\n".
-                    "    6,\n".
-                    "    0,\n".
-                    "    0,\n".
-                    "    0,\n".
-                    "    0)\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "INSERT INTO `user_resource` (`user_id`,\n".
+                     "    `food`,\n".
+                     "    `wood`,\n".
+                     "    `stone`,\n".
+                     "    `coal`,\n".
+                     "    `iron`,\n".
+                     "    `gold`)\n".
+                     "VALUES (".$id.",\n".
+                     "    10,\n".
+                     "    6,\n".
+                     "    0,\n".
+                     "    0,\n".
+                     "    0,\n".
+                     "    0)\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -6;
     }
 
-    if (mysql_query("COMMIT", $mysql_connection) === true)
+    if (mysqli_query($mysql_connection, "COMMIT") === true)
     {
         return $id;
     }
 
-    mysql_query("ROLLBACK", $mysql_connection);
+    mysqli_query($mysql_connection, "ROLLBACK");
     return 0;
 }
 
@@ -153,24 +153,24 @@ function updateUser($userID)
     // Fertige Gebaeude von der Baureihe in die Gebaeude-Liste
     // aufnehmen.
 
-    $bauschlange = mysql_query("SELECT `building`,\n".
-                               "    `ready`\n".
-                               "FROM `build_queue`\n".
-                               "WHERE `user_id`=".$userID." AND\n".
-                               "    `ready`<CURDATE()\n".
-                               "ORDER BY `ready` ASC",
-                               $mysql_connection);
+    $bauschlange = mysqli_query($mysql_connection,
+                                "SELECT `building`,\n".
+                                "    `ready`\n".
+                                "FROM `build_queue`\n".
+                                "WHERE `user_id`=".$userID." AND\n".
+                                "    `ready`<CURDATE()\n".
+                                "ORDER BY `ready` ASC");
 
     if ($bauschlange != false)
     {
         $result = array();
 
-        while ($temp = mysql_fetch_assoc($bauschlange))
+        while ($temp = mysqli_fetch_assoc($bauschlange))
         {
             $result[] = $temp;
         }
 
-        mysql_free_result($bauschlange);
+        mysqli_free_result($bauschlange);
         $bauschlange = $result;
     }
     else
@@ -179,55 +179,55 @@ function updateUser($userID)
     }
 
 
-    if (mysql_query("BEGIN", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "BEGIN") !== true)
     {
         return -3;
     }
 
     foreach ($bauschlange as $gebaeude)
     {
-        if (mysql_query("INSERT INTO `building` (`user_id`,\n".
-                        "    `building`,\n".
-                        "    `timer`)\n".
-                        "VALUES(".$userID.",\n".
-                        "    '".$gebaeude['building']."',\n".
-                        "    '".$gebaeude['ready']."')\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "INSERT INTO `building` (`user_id`,\n".
+                         "    `building`,\n".
+                         "    `timer`)\n".
+                         "VALUES(".$userID.",\n".
+                         "    '".$gebaeude['building']."',\n".
+                         "    '".$gebaeude['ready']."')\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -4;
         }
 
         $messages[] = translateEnumGebaeudeToDisplayText($gebaeude['building'])." am ".$gebaeude['ready']." fertiggestellt.";
     }
 
-    if (mysql_query("DELETE\n".
-                    "FROM `build_queue`\n".
-                    "WHERE `user_id`=".$userID." AND\n".
-                    "    `ready`<CURDATE()",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "DELETE\n".
+                     "FROM `build_queue`\n".
+                     "WHERE `user_id`=".$userID." AND\n".
+                     "    `ready`<CURDATE()") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -5;
     }
 
 
     // Ressourcen aus den Gebaeuden schoepfen.
 
-    $ressourcen = mysql_query("SELECT `food`,".
-                              "    `wood`,\n".
-                              "    `stone`,\n".
-                              "    `coal`,\n".
-                              "    `iron`,\n".
-                              "    `gold`\n".
-                              "FROM `user_resource`\n".
-                              "WHERE `user_id`=".$userID."\n",
-                              $mysql_connection);
+    $ressourcen = mysqli_query($mysql_connection,
+                               "SELECT `food`,".
+                               "    `wood`,\n".
+                               "    `stone`,\n".
+                               "    `coal`,\n".
+                               "    `iron`,\n".
+                               "    `gold`\n".
+                               "FROM `user_resource`\n".
+                               "WHERE `user_id`=".$userID."\n");
 
     if ($ressourcen != false)
     {
-        $result = mysql_fetch_assoc($ressourcen);
-        mysql_free_result($ressourcen);
+        $result = mysqli_fetch_assoc($ressourcen);
+        mysqli_free_result($ressourcen);
         $ressourcen = $result;
     }
     else
@@ -236,28 +236,28 @@ function updateUser($userID)
     }
 
     // TODO: Hier evtl. Stadtgebaeude ausschliessen...
-    $gebaeude = mysql_query("SELECT `building`,\n".
-                            "    `timer`\n".
-                            "FROM `building`\n".
-                            "WHERE `user_id`=".$userID." AND\n".
-                            "    `timer`<CURDATE()",
-                            $mysql_connection);
+    $gebaeude = mysqli_query($mysql_connection,
+                             "SELECT `building`,\n".
+                             "    `timer`\n".
+                             "FROM `building`\n".
+                             "WHERE `user_id`=".$userID." AND\n".
+                             "    `timer`<CURDATE()");
 
     if ($gebaeude != false)
     {
         $result = array();
 
-        while ($temp = mysql_fetch_assoc($gebaeude))
+        while ($temp = mysqli_fetch_assoc($gebaeude))
         {
             $result[] = $temp;
         }
 
-        mysql_free_result($gebaeude);
+        mysqli_free_result($gebaeude);
         $gebaeude = $result;
     }
     else
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -7;
     }
 
@@ -322,14 +322,14 @@ function updateUser($userID)
         }
     }
 
-    if (mysql_query("UPDATE `user_resource`\n".
-                    "SET `food`=".$nahrung.",\n".
-                    "    `wood`=".$holz.",\n".
-                    "    `stone`=".$stein."\n".
-                    "WHERE `user_id`=".$userID."\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "UPDATE `user_resource`\n".
+                     "SET `food`=".$nahrung.",\n".
+                     "    `wood`=".$holz.",\n".
+                     "    `stone`=".$stein."\n".
+                     "WHERE `user_id`=".$userID."\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -8;
     }
 
@@ -339,17 +339,17 @@ function updateUser($userID)
                   sprintf("%+d", $stein - $ressourcen['stone'])." Stein.";
 
     // Vermerken, dass Ressourcen geholt wurden.
-    if (mysql_query("UPDATE `building`\n".
-                    "SET `timer`=CURDATE()\n".
-                    "WHERE `user_id`=".$userID." AND\n".
-                    "    `timer`<CURDATE()",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "UPDATE `building`\n".
+                     "SET `timer`=CURDATE()\n".
+                     "WHERE `user_id`=".$userID." AND\n".
+                     "    `timer`<CURDATE()") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -9;
     }
 
-    if (mysql_query("COMMIT", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "COMMIT") !== true)
     {
         return -10;
     }
@@ -373,20 +373,20 @@ function insertNewBuilding($userID, $gebaeude)
     }
 
 
-    $map = mysql_query("SELECT `fields_grass`,".
-                       "    `fields_wood`,\n".
-                       "    `fields_stone`,\n".
-                       "    `fields_coal`,\n".
-                       "    `fields_iron`,\n".
-                       "    `fields_gold`\n".
-                       "FROM `user_map`\n".
-                       "WHERE `user_id`=".$_SESSION['user_id']."\n",
-                       $mysql_connection);
+    $map = mysqli_query($mysql_connection,
+                        "SELECT `fields_grass`,".
+                        "    `fields_wood`,\n".
+                        "    `fields_stone`,\n".
+                        "    `fields_coal`,\n".
+                        "    `fields_iron`,\n".
+                        "    `fields_gold`\n".
+                        "FROM `user_map`\n".
+                        "WHERE `user_id`=".$_SESSION['user_id']."\n");
 
     if ($map != false)
     {
-        $result = mysql_fetch_assoc($map);
-        mysql_free_result($map);
+        $result = mysqli_fetch_assoc($map);
+        mysqli_free_result($map);
         $map = $result;
     }
     else
@@ -394,20 +394,20 @@ function insertNewBuilding($userID, $gebaeude)
         return -2;
     }
 
-    $ressourcen = mysql_query("SELECT `food`,".
-                              "    `wood`,\n".
-                              "    `stone`,\n".
-                              "    `coal`,\n".
-                              "    `iron`,\n".
-                              "    `gold`\n".
-                              "FROM `user_resource`\n".
-                              "WHERE `user_id`=".$userID."\n",
-                              $mysql_connection);
+    $ressourcen = mysqli_query($mysql_connection,
+                               "SELECT `food`,".
+                               "    `wood`,\n".
+                               "    `stone`,\n".
+                               "    `coal`,\n".
+                               "    `iron`,\n".
+                               "    `gold`\n".
+                               "FROM `user_resource`\n".
+                               "WHERE `user_id`=".$userID."\n");
 
     if ($ressourcen != false)
     {
-        $result = mysql_fetch_assoc($ressourcen);
-        mysql_free_result($ressourcen);
+        $result = mysqli_fetch_assoc($ressourcen);
+        mysqli_free_result($ressourcen);
         $ressourcen = $result;
     }
     else
@@ -416,7 +416,7 @@ function insertNewBuilding($userID, $gebaeude)
     }
 
 
-    if (mysql_query("BEGIN", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "BEGIN") !== true)
     {
         return -4;
     }
@@ -426,44 +426,44 @@ function insertNewBuilding($userID, $gebaeude)
     case ENUM_GEBAEUDE_BAUERNHOF:
         if ($map['fields_grass'] <= 0)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -5;
         }
 
         if ($ressourcen['wood'] < 3)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             // Feststehender Signal-Wert.
             return -6;
         }
 
-        if (mysql_query("INSERT INTO `build_queue` (`user_id`,\n".
-                        "    `building`,\n".
-                        "    `ready`)\n".
-                        "VALUES (".$userID.",\n".
-                        "    '".$gebaeude."',\n".
-                        "    CURDATE() + 3)\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "INSERT INTO `build_queue` (`user_id`,\n".
+                         "    `building`,\n".
+                         "    `ready`)\n".
+                         "VALUES (".$userID.",\n".
+                         "    '".$gebaeude."',\n".
+                         "    CURDATE() + 3)\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -100;
         }
 
-        if (mysql_query("UPDATE `user_map`\n".
-                        "SET `fields_grass`=`fields_grass` - 1\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_map`\n".
+                         "SET `fields_grass`=`fields_grass` - 1\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -101;
         }
 
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `wood`=`wood` - 3\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `wood`=`wood` - 3\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -102;
         }
 
@@ -471,44 +471,44 @@ function insertNewBuilding($userID, $gebaeude)
     case ENUM_GEBAEUDE_HOLZFAELLER:
         if ($map['fields_wood'] <= 0)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -5;
         }
 
         if ($ressourcen['wood'] < 1)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             // Feststehender Signal-Wert.
             return -6;
         }
 
-        if (mysql_query("INSERT INTO `build_queue` (`user_id`,\n".
-                        "    `building`,\n".
-                        "    `ready`)\n".
-                        "VALUES (".$userID.",\n".
-                        "    '".$gebaeude."',\n".
-                        "    CURDATE() + 1)\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "INSERT INTO `build_queue` (`user_id`,\n".
+                         "    `building`,\n".
+                         "    `ready`)\n".
+                         "VALUES (".$userID.",\n".
+                         "    '".$gebaeude."',\n".
+                         "    CURDATE() + 1)\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -100;
         }
 
-        if (mysql_query("UPDATE `user_map`\n".
-                        "SET `fields_wood`=`fields_wood` - 1\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_map`\n".
+                         "SET `fields_wood`=`fields_wood` - 1\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -101;
         }
 
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `wood`=`wood` - 1\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `wood`=`wood` - 1\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -102;
         }
 
@@ -516,44 +516,44 @@ function insertNewBuilding($userID, $gebaeude)
     case ENUM_GEBAEUDE_STEINBRUCH:
         if ($map['fields_stone'] <= 0)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -5;
         }
 
         if ($ressourcen['wood'] < 2)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             // Feststehender Signal-Wert.
             return -6;
         }
 
-        if (mysql_query("INSERT INTO `build_queue` (`user_id`,\n".
-                        "    `building`,\n".
-                        "    `ready`)\n".
-                        "VALUES (".$userID.",\n".
-                        "    '".$gebaeude."',\n".
-                        "    CURDATE() + 2)\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "INSERT INTO `build_queue` (`user_id`,\n".
+                         "    `building`,\n".
+                         "    `ready`)\n".
+                         "VALUES (".$userID.",\n".
+                         "    '".$gebaeude."',\n".
+                         "    CURDATE() + 2)\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -100;
         }
 
-        if (mysql_query("UPDATE `user_map`\n".
-                        "SET `fields_stone`=`fields_stone` - 1\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_map`\n".
+                         "SET `fields_stone`=`fields_stone` - 1\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -101;
         }
 
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `wood`=`wood` - 2\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `wood`=`wood` - 2\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -102;
         }
 
@@ -561,89 +561,89 @@ function insertNewBuilding($userID, $gebaeude)
     case ENUM_GEBAEUDE_HANDELSHAUS:
         if ($ressourcen['wood'] < 5)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             // Feststehender Signal-Wert.
             return -6;
         }
 
         if ($ressourcen['stone'] < 5)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             // Feststehender Signal-Wert.
             return -7;
         }
 
         {
             // Vielleicht eher COUNT?
-            $bestehende_gebaeude = mysql_query("SELECT `building`\n".
-                                               "FROM `building`\n".
-                                               "WHERE `user_id`=".$userID." AND\n".
-                                               "    `building`='".$gebaeude."'",
-                                               $mysql_connection);
+            $bestehende_gebaeude = mysqli_query($mysql_connection,
+                                                "SELECT `building`\n".
+                                                "FROM `building`\n".
+                                                "WHERE `user_id`=".$userID." AND\n".
+                                                "    `building`='".$gebaeude."'");
 
             if ($bestehende_gebaeude == false)
             {
-                mysql_query("ROLLBACK", $mysql_connection);
+                mysqli_query($mysql_connection, "ROLLBACK");
                 return -8;
             }
 
-            if (mysql_num_rows($bestehende_gebaeude) > 0)
+            if (mysqli_num_rows($bestehende_gebaeude) > 0)
             {
-                mysql_query("ROLLBACK", $mysql_connection);
+                mysqli_query($mysql_connection, "ROLLBACK");
                 return -9;
             }
         }
 
         {
             // Vielleicht eher COUNT?
-            $beauftragte_gebaeude = mysql_query("SELECT `ready`\n".
-                                                "FROM `build_queue`\n".
-                                                "WHERE `user_id`=".$userID." AND\n".
-                                                "    `building`='".$gebaeude."'",
-                                                $mysql_connection);
+            $beauftragte_gebaeude = mysqli_query($mysql_connection,
+                                                 "SELECT `ready`\n".
+                                                 "FROM `build_queue`\n".
+                                                 "WHERE `user_id`=".$userID." AND\n".
+                                                 "    `building`='".$gebaeude."'");
 
             if ($beauftragte_gebaeude == false)
             {
-                mysql_query("ROLLBACK", $mysql_connection);
+                mysqli_query($mysql_connection, "ROLLBACK");
                 return -8;
             }
 
-            if (mysql_num_rows($beauftragte_gebaeude) > 0)
+            if (mysqli_num_rows($beauftragte_gebaeude) > 0)
             {
-                mysql_query("ROLLBACK", $mysql_connection);
+                mysqli_query($mysql_connection, "ROLLBACK");
                 return -9;
             }
         }
 
-        if (mysql_query("INSERT INTO `build_queue` (`user_id`,\n".
-                        "    `building`,\n".
-                        "    `ready`)\n".
-                        "VALUES (".$userID.",\n".
-                        "    '".$gebaeude."',\n".
-                        "    CURDATE() + 4)\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "INSERT INTO `build_queue` (`user_id`,\n".
+                         "    `building`,\n".
+                         "    `ready`)\n".
+                         "VALUES (".$userID.",\n".
+                         "    '".$gebaeude."',\n".
+                         "    CURDATE() + 4)\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -100;
         }
 
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `wood`=`wood` - 5,\n".
-                        "    `stone`=`stone` - 5\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `wood`=`wood` - 5,\n".
+                         "    `stone`=`stone` - 5\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -102;
         }
 
         break;
     default:
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -103;
     }
 
-    if (mysql_query("COMMIT", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "COMMIT") !== true)
     {
         return -104;
     }
@@ -681,9 +681,9 @@ function sendResources($userID, $menge, $ressourceArt, $empfaenger, $sender = NU
     // werden, bevor sie in ein SQL-Query eingefügt werden dürfen.
     // Es könnten unerlaubte Zeichen enthalten sein mit dem Ziel,
     // die Datenbank zu manipulieren.
-    $menge = mysql_real_escape_string($menge);
-    $ressourceArt = mysql_real_escape_string($ressourceArt);
-    $empfaenger = mysql_real_escape_string($empfaenger);
+    $menge = mysqli_real_escape_string($mysql_connection, $menge);
+    $ressourceArt = mysqli_real_escape_string($mysql_connection, $ressourceArt);
+    $empfaenger = mysqli_real_escape_string($mysql_connection, $empfaenger);
 
     if ($menge == false ||
         $ressourceArt == false ||
@@ -692,20 +692,20 @@ function sendResources($userID, $menge, $ressourceArt, $empfaenger, $sender = NU
         return -2;
     }
 
-    $empfaengerID = mysql_query("SELECT `id`\n".
-                                "FROM `user`\n".
-                                "WHERE `name` LIKE '".$empfaenger."'",
-                                $mysql_connection);
+    $empfaengerID = mysqli_query($mysql_connection,
+                                 "SELECT `id`\n".
+                                 "FROM `user`\n".
+                                 "WHERE `name` LIKE '".$empfaenger."'");
 
     if ($empfaengerID == false)
     {
         return -3;
     }
 
-    if (mysql_num_rows($empfaengerID) == 1)
+    if (mysqli_num_rows($empfaengerID) == 1)
     {
-        $result = mysql_fetch_assoc($empfaengerID);
-        mysql_free_result($empfaengerID);
+        $result = mysqli_fetch_assoc($empfaengerID);
+        mysqli_free_result($empfaengerID);
         $empfaengerID = $result['id'];
     }
     else
@@ -714,15 +714,15 @@ function sendResources($userID, $menge, $ressourceArt, $empfaenger, $sender = NU
         return -4;
     }
 
-    $ressourcen = mysql_query("SELECT `".$ressourceArt."`".
-                              "FROM `user_resource`\n".
-                              "WHERE `user_id`=".$userID."\n",
-                              $mysql_connection);
+    $ressourcen = mysqli_query($mysql_connection,
+                               "SELECT `".$ressourceArt."`".
+                               "FROM `user_resource`\n".
+                               "WHERE `user_id`=".$userID."\n");
 
     if ($ressourcen != false)
     {
-        $result = mysql_fetch_assoc($ressourcen);
-        mysql_free_result($ressourcen);
+        $result = mysqli_fetch_assoc($ressourcen);
+        mysqli_free_result($ressourcen);
         $ressourcen = $result;
     }
     else
@@ -736,26 +736,26 @@ function sendResources($userID, $menge, $ressourceArt, $empfaenger, $sender = NU
         return -6;
     }
 
-    if (mysql_query("BEGIN", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "BEGIN") !== true)
     {
         return -7;
     }
 
-    if (mysql_query("UPDATE `user_resource`\n".
-                    "SET `".$ressourceArt."`=`".$ressourceArt."` - ".$menge."\n".
-                    "WHERE `user_id`=".$userID."\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "UPDATE `user_resource`\n".
+                     "SET `".$ressourceArt."`=`".$ressourceArt."` - ".$menge."\n".
+                     "WHERE `user_id`=".$userID."\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -8;
     }
 
-    if (mysql_query("UPDATE `user_resource`\n".
-                    "SET `".$ressourceArt."`=`".$ressourceArt."` + ".$menge."\n".
-                    "WHERE `user_id`=".$empfaengerID."\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "UPDATE `user_resource`\n".
+                     "SET `".$ressourceArt."`=`".$ressourceArt."` + ".$menge."\n".
+                     "WHERE `user_id`=".$empfaengerID."\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -9;
     }
 
@@ -768,7 +768,7 @@ function sendResources($userID, $menge, $ressourceArt, $empfaenger, $sender = NU
         $messages[] = $menge." ".translateEnumResourceToDisplayText($ressourceArt)." erhalten.";
     }
 
-    if (mysql_query("COMMIT", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "COMMIT") !== true)
     {
         return -10;
     }
@@ -818,10 +818,10 @@ function placeResourceTrade($userID, $sucheMenge, $sucheRessourceArt, $gegenMeng
     // werden, bevor sie in ein SQL-Query eingefügt werden dürfen.
     // Es könnten unerlaubte Zeichen enthalten sein mit dem Ziel,
     // die Datenbank zu manipulieren.
-    $sucheMenge = mysql_real_escape_string($sucheMenge);
-    $sucheRessourceArt = mysql_real_escape_string($sucheRessourceArt);
-    $gegenMenge = mysql_real_escape_string($gegenMenge);
-    $gegenRessourceArt = mysql_real_escape_string($gegenRessourceArt);
+    $sucheMenge = mysqli_real_escape_string($mysql_connection, $sucheMenge);
+    $sucheRessourceArt = mysqli_real_escape_string($mysql_connection, $sucheRessourceArt);
+    $gegenMenge = mysqli_real_escape_string($mysql_connection, $gegenMenge);
+    $gegenRessourceArt = mysqli_real_escape_string($mysql_connection, $gegenRessourceArt);
 
     if ($sucheMenge == false ||
         $sucheRessourceArt == false ||
@@ -831,15 +831,15 @@ function placeResourceTrade($userID, $sucheMenge, $sucheRessourceArt, $gegenMeng
         return -4;
     }
 
-    $ressourcen = mysql_query("SELECT `".$gegenRessourceArt."`".
-                              "FROM `user_resource`\n".
-                              "WHERE `user_id`=".$userID."\n",
-                              $mysql_connection);
+    $ressourcen = mysqli_query($mysql_connection,
+                               "SELECT `".$gegenRessourceArt."`".
+                               "FROM `user_resource`\n".
+                               "WHERE `user_id`=".$userID."\n");
 
     if ($ressourcen != false)
     {
-        $result = mysql_fetch_assoc($ressourcen);
-        mysql_free_result($ressourcen);
+        $result = mysqli_fetch_assoc($ressourcen);
+        mysqli_free_result($ressourcen);
         $ressourcen = $result;
     }
     else
@@ -853,42 +853,42 @@ function placeResourceTrade($userID, $sucheMenge, $sucheRessourceArt, $gegenMeng
         return -6;
     }
 
-    if (mysql_query("BEGIN", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "BEGIN") !== true)
     {
         return -7;
     }
 
-    if (mysql_query("UPDATE `user_resource`\n".
-                    "SET `".$gegenRessourceArt."`=`".$gegenRessourceArt."` - ".$gegenMenge."\n".
-                    "WHERE `user_id`=".$userID."\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "UPDATE `user_resource`\n".
+                     "SET `".$gegenRessourceArt."`=`".$gegenRessourceArt."` - ".$gegenMenge."\n".
+                     "WHERE `user_id`=".$userID."\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -8;
     }
 
-    if (mysql_query("INSERT INTO `trading` (`id`,\n".
-                    "    `give_amount`,\n".
-                    "    `give_type`,\n".
-                    "    `get_amount`,\n".
-                    "    `get_type`,\n".
-                    "    `time`,\n".
-                    "    `user_id`)\n".
-                    "VALUES (NULL,\n".
-                    "    ".$gegenMenge.",\n".
-                    "    '".$gegenRessourceArt."',\n".
-                    "    ".$sucheMenge.",\n".
-                    "    '".$sucheRessourceArt."',\n".
-                    "    NULL,\n".
-                    "    ".$userID.")\n",
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "INSERT INTO `trading` (`id`,\n".
+                     "    `give_amount`,\n".
+                     "    `give_type`,\n".
+                     "    `get_amount`,\n".
+                     "    `get_type`,\n".
+                     "    `time`,\n".
+                     "    `user_id`)\n".
+                     "VALUES (NULL,\n".
+                     "    ".$gegenMenge.",\n".
+                     "    '".$gegenRessourceArt."',\n".
+                     "    ".$sucheMenge.",\n".
+                     "    '".$sucheRessourceArt."',\n".
+                     "    NULL,\n".
+                     "    ".$userID.")\n") !== true)
     {
-        mysql_query("ROLLBACK", $mysql_connection);
+        mysqli_query($mysql_connection, "ROLLBACK");
         return -9;
     }
 
 
-    if (mysql_query("COMMIT", $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection, "COMMIT") !== true)
     {
         return -10;
     }
@@ -914,26 +914,26 @@ function handleResourceTrade($tradeID, $userID)
     // werden, bevor sie in ein SQL-Query eingefügt werden dürfen.
     // Es könnten unerlaubte Zeichen enthalten sein mit dem Ziel,
     // die Datenbank zu manipulieren.
-    $tradeID = mysql_real_escape_string($tradeID);
+    $tradeID = mysqli_real_escape_string($mysql_connection, $tradeID);
 
     if ($tradeID == false)
     {
         return -2;
     }
 
-    $trade = mysql_query("SELECT `give_amount`,\n".
-                         "    `give_type`,\n".
-                         "    `get_amount`,\n".
-                         "    `get_type`,\n".
-                         "    `user_id`\n".
-                         "FROM `trading`\n".
-                         "WHERE `id`=".$tradeID."\n",
-                         $mysql_connection);
+    $trade = mysqli_query($mysql_connection,
+                          "SELECT `give_amount`,\n".
+                          "    `give_type`,\n".
+                          "    `get_amount`,\n".
+                          "    `get_type`,\n".
+                          "    `user_id`\n".
+                          "FROM `trading`\n".
+                          "WHERE `id`=".$tradeID."\n");
 
     if ($trade != false)
     {
-        $result = mysql_fetch_assoc($trade);
-        mysql_free_result($trade);
+        $result = mysqli_fetch_assoc($trade);
+        mysqli_free_result($trade);
         $trade = $result;
     }
     else
@@ -946,32 +946,32 @@ function handleResourceTrade($tradeID, $userID)
         // Der zu behandelnde Trade gehoert dem User,
         // also will dieser eine Loesch-Aktion durchfuehren.
 
-        if (mysql_query("BEGIN", $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection, "BEGIN") !== true)
         {
             return -4;
         }
 
         // Ressourcen aus dem Handelshaus an den User
         // zurueckgeben.
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `".$trade['give_type']."`=`".$trade['give_type']."` + ".$trade['give_amount']."\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `".$trade['give_type']."`=`".$trade['give_type']."` + ".$trade['give_amount']."\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -5;
         }
 
-        if (mysql_query("DELETE\n".
-                        "FROM `trading`\n".
-                        "WHERE `id`=".$tradeID,
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "DELETE\n".
+                         "FROM `trading`\n".
+                         "WHERE `id`=".$tradeID) !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -6;
         }
 
-        if (mysql_query("COMMIT", $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection, "COMMIT") !== true)
         {
             return -7;
         }
@@ -985,15 +985,15 @@ function handleResourceTrade($tradeID, $userID)
 
         $messages = array();
 
-        $ressourcen = mysql_query("SELECT `".$trade['get_type']."`".
-                                  "FROM `user_resource`\n".
-                                  "WHERE `user_id`=".$userID."\n",
-                                  $mysql_connection);
+        $ressourcen = mysqli_query($mysql_connection,
+                                   "SELECT `".$trade['get_type']."`".
+                                   "FROM `user_resource`\n".
+                                   "WHERE `user_id`=".$userID."\n");
 
         if ($ressourcen != false)
         {
-            $result = mysql_fetch_assoc($ressourcen);
-            mysql_free_result($ressourcen);
+            $result = mysqli_fetch_assoc($ressourcen);
+            mysqli_free_result($ressourcen);
             $ressourcen = $result;
         }
         else
@@ -1007,46 +1007,46 @@ function handleResourceTrade($tradeID, $userID)
             return -9;
         }
 
-        if (mysql_query("BEGIN", $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection, "BEGIN") !== true)
         {
             return -10;
         }
 
         // User.
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `".$trade['give_type']."`=`".$trade['give_type']."` + ".$trade['give_amount'].",\n".
-                        "    `".$trade['get_type']."`=`".$trade['get_type']."` - ".$trade['get_amount']."\n".
-                        "WHERE `user_id`=".$userID."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `".$trade['give_type']."`=`".$trade['give_type']."` + ".$trade['give_amount'].",\n".
+                         "    `".$trade['get_type']."`=`".$trade['get_type']."` - ".$trade['get_amount']."\n".
+                         "WHERE `user_id`=".$userID."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -11;
         }
 
         // User des Angebots ("give" wurde bereits beim Eintragen des
         // Trades abgezogen, sodass anschliessend nur noch der Trade
         // geloescht werden muss).
-        if (mysql_query("UPDATE `user_resource`\n".
-                        "SET `".$trade['get_type']."`=`".$trade['get_type']."` + ".$trade['get_amount']."\n".
-                        "WHERE `user_id`=".$trade['user_id']."\n",
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "UPDATE `user_resource`\n".
+                         "SET `".$trade['get_type']."`=`".$trade['get_type']."` + ".$trade['get_amount']."\n".
+                         "WHERE `user_id`=".$trade['user_id']."\n") !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -12;
         }
 
         $messages[] = "Jemand hat deine ".$trade['give_amount']." ".translateEnumResourceToDisplayText($trade['give_type'])." gegen ".$trade['get_amount']." ".translateEnumResourceToDisplayText($trade['get_type'])." gehandelt.";
 
-        if (mysql_query("DELETE\n".
-                        "FROM `trading`\n".
-                        "WHERE `id`=".$tradeID,
-                        $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection,
+                         "DELETE\n".
+                         "FROM `trading`\n".
+                         "WHERE `id`=".$tradeID) !== true)
         {
-            mysql_query("ROLLBACK", $mysql_connection);
+            mysqli_query($mysql_connection, "ROLLBACK");
             return -13;
         }
 
-        if (mysql_query("COMMIT", $mysql_connection) !== true)
+        if (mysqli_query($mysql_connection, "COMMIT") !== true)
         {
             return -14;
         }
@@ -1077,22 +1077,22 @@ function addMessages($userID, $messages)
         // SQL-Query eingefügt werden dürfen. Es könnten unerlaubte
         // Zeichen enthalten sein mit dem Ziel, die Datenbank zu
         // manipulieren.
-        $message = mysql_real_escape_string($message);
+        $message = mysqli_real_escape_string($mysql_connection, $message);
 
         if ($message == false)
         {
             continue;
         }
 
-        @mysql_query("INSERT INTO `message` (`id`,\n".
-                     "    `text`,\n".
-                     "    `time`,\n".
-                     "    `user_id`)\n".
-                     "VALUES (NULL,\n".
-                     "    '".$message."',\n".
-                     "    NULL,\n".
-                     "    ".$userID.")\n",
-                     $mysql_connection);
+        @mysqli_query($mysql_connection,
+                      "INSERT INTO `message` (`id`,\n".
+                      "    `text`,\n".
+                      "    `time`,\n".
+                      "    `user_id`)\n".
+                      "VALUES (NULL,\n".
+                      "    '".$message."',\n".
+                      "    NULL,\n".
+                      "    ".$userID.")\n");
     }
 
     return 0;
@@ -1108,10 +1108,10 @@ function removeAllMessages($userID)
         return -1;
     }
 
-    if (mysql_query("DELETE\n".
-                    "FROM `message`\n".
-                    "WHERE `user_id`=".$userID,
-                    $mysql_connection) !== true)
+    if (mysqli_query($mysql_connection,
+                     "DELETE\n".
+                     "FROM `message`\n".
+                     "WHERE `user_id`=".$userID) !== true)
     {
         return -2;
     }

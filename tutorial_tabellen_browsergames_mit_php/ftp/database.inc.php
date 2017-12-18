@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2011-2012  Stephan Kreutzer
+/* Copyright (C) 2011-2017  Stephan Kreutzer
  *
  * This file is part of Tutorial "Tabellen-Browsergames mit PHP".
  *
@@ -23,13 +23,13 @@
 
 
 
-$mysql_connection = @mysql_connect("localhost", "tutuser", "password");
+$mysql_connection = @mysqli_connect("localhost", "tutuser", "password");
 
 if ($mysql_connection != false)
 {
-    if (@mysql_query("USE tutorial", $mysql_connection) == false)
+    if (@mysqli_query($mysql_connection, "USE tutorial") == false)
     {
-        @mysql_close($mysql_connection);
+        @mysqli_close($mysql_connection);
         $mysql_connection = false;
     }
 }
